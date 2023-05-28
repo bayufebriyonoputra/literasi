@@ -41,7 +41,7 @@
                             <td>{{ Carbon\Carbon::parse($r->tanggal)->locale('id_ID')->isoFormat('DD MMMM YYYY') }}</td>
                             <td>{{ $r->durasi }} Menit</td>
                             <td>{{ $r->agama }}</td>
-                            <td>{{ $r->dataKerohanian->kegiatan }}</td>
+                            <td>{{ isset($r->dataKerohanian->kegiatan ) ? $r->dataKerohanian->kegiatan  : 'Jenis Kegiatan Sudaah Dihapus'}}</td>
                             <td class="text-wrap width-200">{{ $r->laporan_kegiatan }}</td>
                             <td>
                                 <a href="/kerohanian/{{ $r->id }}/edit" class="btn btn-warning"><i
