@@ -24,7 +24,7 @@ class GeneralTimLiterasiController extends Controller
         $ekstensif = $ekstensif->map(function ($query) {
             return $query->groupBy('isbn');
         });
-        $kelas = Kelas::all();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
         return view('tim_literasi.ekstensif.list', [
             'ekstensif' => $ekstensif,
             'kelas' => $kelas
@@ -35,7 +35,7 @@ class GeneralTimLiterasiController extends Controller
     {
         $warga_kelas = WargaKelas::where('kelas_id', $request->kelas_id);
         $warga_kelas = $warga_kelas->pluck('siswa_id');
-        $kelas = Kelas::all();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
 
         $ekstensif = Ekstensif::whereIn('siswa_id', $warga_kelas)->get();
         $ekstensif = $ekstensif->groupBy('siswa_id');
@@ -58,7 +58,7 @@ class GeneralTimLiterasiController extends Controller
         $ekstensif = Ekstensif::all();
         $ekstensif = $ekstensif->groupBy('siswa_id');
 
-        $kelas = Kelas::all();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
 
         $jumlah_siswa = Siswa::all()->count();
         $jml_input = $ekstensif->count();
@@ -90,10 +90,10 @@ class GeneralTimLiterasiController extends Controller
         $memenuhi = 0;
         $tidak_memenuhi = 0;
 
-        $ekstensif = Ekstensif::whereIn('siswa_id', $warga_kelas);
+        $ekstensif = Ekstensif::whereIn('siswa_id', $warga_kelas)->get();
         $ekstensif = $ekstensif->groupBy('siswa_id');
 
-        $kelas = Kelas::all();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
 
         $jumlah_siswa = Siswa::whereIn('id', $warga_kelas)->count();
         $jml_input = $ekstensif->count();
@@ -112,7 +112,7 @@ class GeneralTimLiterasiController extends Controller
             $ekstensif = Ekstensif::all();
             $ekstensif = $ekstensif->groupBy('siswa_id');
 
-            $kelas = Kelas::all();
+            $kelas = Kelas::orderBy('nama_kelas')->get();
 
             $jumlah_siswa = Siswa::all()->count();
             $jml_input = $ekstensif->count();
@@ -141,7 +141,7 @@ class GeneralTimLiterasiController extends Controller
     {
         $kerohanian = Kerohanian::all();
         $kerohanian = $kerohanian->groupBy('siswa_id');
-        $kelas = Kelas::all();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
         return view('tim_literasi.kerohanian.list', [
             'rohani' => $kerohanian,
             'kelas' => $kelas
@@ -152,7 +152,7 @@ class GeneralTimLiterasiController extends Controller
     {
         $warga_kelas = WargaKelas::where('kelas_id', $request->kelas_id);
         $warga_kelas = $warga_kelas->pluck('siswa_id');
-        $kelas = Kelas::all();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
 
         $kerohanian = Kerohanian::whereIn('siswa_id', $warga_kelas)->get();
         $kerohanian = $kerohanian->groupBy('siswa_id');
@@ -172,7 +172,7 @@ class GeneralTimLiterasiController extends Controller
         $kerohanian = Kerohanian::all();
         $kerohanian = $kerohanian->groupBy('siswa_id');
 
-        $kelas = Kelas::all();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
 
         $jumlah_siswa = Siswa::all()->count();
         $jml_input = $kerohanian->count();
@@ -204,9 +204,9 @@ class GeneralTimLiterasiController extends Controller
         $memenuhi = 0;
         $tidak_memenuhi = 0;
 
-        $kelas = Kelas::all();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
 
-        $kerohanian = Kerohanian::whereIn('siswa_id', $warga_kelas);
+        $kerohanian = Kerohanian::whereIn('siswa_id', $warga_kelas)->get();
         $kerohanian = $kerohanian->groupBy('siswa_id');
 
         $jumlah_siswa = Siswa::whereIn('id', $warga_kelas)->count();
@@ -226,7 +226,7 @@ class GeneralTimLiterasiController extends Controller
             $kerohanian = Kerohanian::all();
             $kerohanian = $kerohanian->groupBy('siswa_id');
 
-            $kelas = Kelas::all();
+            $kelas = Kelas::orderBy('nama_kelas')->get();
 
             $jumlah_siswa = Siswa::all()->count();
             $jml_input = $kerohanian->count();
@@ -253,7 +253,7 @@ class GeneralTimLiterasiController extends Controller
     {
         $kunjungan = Kunjungan::all();
         $kunjungan = $kunjungan->groupBy('siswa_id');
-        $kelas = Kelas::all();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
         return view('tim_literasi.kunjungan.list', [
             'kunjungan' => $kunjungan,
             'kelas' => $kelas
@@ -264,7 +264,7 @@ class GeneralTimLiterasiController extends Controller
     {
         $warga_kelas = WargaKelas::where('kelas_id', $request->kelas_id);
         $warga_kelas = $warga_kelas->pluck('siswa_id');
-        $kelas = Kelas::all();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
 
         $kunjungan = Kunjungan::whereIn('siswa_id', $warga_kelas)->get();
         $kunjungan = $kunjungan->groupBy('siswa_id');
@@ -284,7 +284,7 @@ class GeneralTimLiterasiController extends Controller
         $kunjungan = Kunjungan::all();
         $kunjungan = $kunjungan->groupBy('siswa_id');
 
-        $kelas = Kelas::all();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
 
         $jumlah_siswa = Siswa::all()->count();
         $jml_input = $kunjungan->count();
@@ -316,10 +316,11 @@ class GeneralTimLiterasiController extends Controller
         $memenuhi = 0;
         $tidak_memenuhi = 0;
 
-        $kunjungan = Kunjungan::whereIn('siswa_id', $warga_kelas);
+        $kunjungan = Kunjungan::whereIn('siswa_id', $warga_kelas)->get();
         $kunjungan = $kunjungan->groupBy('siswa_id');
 
-        $kelas = Kelas::all();
+
+        $kelas = Kelas::orderBy('nama_kelas')->get();
 
         $jumlah_siswa = Siswa::whereIn('id', $warga_kelas)->count();
         $jml_input = $kunjungan->count();
@@ -338,7 +339,7 @@ class GeneralTimLiterasiController extends Controller
             $kunjungan = Kunjungan::all();
             $kunjungan = $kunjungan->groupBy('siswa_id');
 
-            $kelas = Kelas::all();
+            $kelas = Kelas::orderBy('nama_kelas')->get();
 
             $jumlah_siswa = Siswa::all()->count();
             $jml_input = $kunjungan->count();
@@ -364,7 +365,7 @@ class GeneralTimLiterasiController extends Controller
     public function ukbi()
     {
         $ukbi = UKBI::all();
-        $kelas = Kelas::all();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
         return view('tim_literasi.ukbi.list', [
             'ukbi' => $ukbi,
             'kelas' => $kelas
@@ -375,7 +376,7 @@ class GeneralTimLiterasiController extends Controller
     {
         $warga_kelas = WargaKelas::where('kelas_id', $request->kelas_id);
         $warga_kelas = $warga_kelas->pluck('siswa_id');
-        $kelas = Kelas::all();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
 
         $ukbi = UKBI::whereIn('siswa_id', $warga_kelas)->get();
         return view('tim_literasi.ukbi.list', [
@@ -394,7 +395,7 @@ class GeneralTimLiterasiController extends Controller
 
         $ukbi = UKBI::all();
 
-        $kelas = Kelas::all();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
         $jumlah_siswa = Siswa::all()->count();
         $jml_input = $ukbi->count();
         foreach ($ukbi as $k) {
@@ -426,7 +427,7 @@ class GeneralTimLiterasiController extends Controller
 
         $ukbi = UKBI::whereIn('siswa_id', $warga_kelas);
 
-        $kelas = Kelas::all();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
 
         $jumlah_siswa = Siswa::whereIn('id', $warga_kelas)->count();
         $jml_input = $ukbi->count();
@@ -445,7 +446,7 @@ class GeneralTimLiterasiController extends Controller
             $ukbi = UKBI::all();
 
 
-            $kelas = Kelas::all();
+            $kelas = Kelas::orderBy('nama_kelas')->get();
 
             $jumlah_siswa = Siswa::all()->count();
             $jml_input = $ukbi->count();
@@ -472,7 +473,7 @@ class GeneralTimLiterasiController extends Controller
     {
         $kegiatan = KegiatanSiswa::all();
         $kegiatan = $kegiatan->groupBy('siswa_id');
-        $kelas = Kelas::all();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
         return view('tim_literasi.kegiatan.list', [
             'kegiatan' => $kegiatan,
             'kelas' => $kelas
@@ -483,7 +484,7 @@ class GeneralTimLiterasiController extends Controller
     {
         $warga_kelas = WargaKelas::where('kelas_id', $request->kelas_id);
         $warga_kelas = $warga_kelas->pluck('siswa_id');
-        $kelas = Kelas::all();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
 
         $kegiatan = KegiatanSiswa::whereIn('siswa_id', $warga_kelas)->get();
         $kegiatan = $kegiatan->groupBy('siswa_id');
@@ -537,7 +538,7 @@ class GeneralTimLiterasiController extends Controller
     {
         $karya = UnggahKarya::all();
         $karya = $karya->groupBy('siswa_id');
-        $kelas = Kelas::all();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
         return view('tim_literasi.karya.list', [
             'karya' => $karya,
             'kelas' => $kelas,
@@ -549,7 +550,7 @@ class GeneralTimLiterasiController extends Controller
     {
         $warga_kelas = WargaKelas::where('kelas_id', $request->kelas_id);
         $warga_kelas = $warga_kelas->pluck('siswa_id');
-        $kelas = Kelas::all();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
 
         $karya = UnggahKarya::whereIn('siswa_id', $warga_kelas)->get();
         $karya = $karya->groupBy('siswa_id');

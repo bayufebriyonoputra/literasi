@@ -39,7 +39,7 @@ class KerohanianController extends Controller
      */
     public function store(Request $request)
     {
-        $kerohanian = Kerohanian::where('siswa_id', auth()->guard('siswa')->user()->id)->where('tanggal', now()->toDateString())->get();
+        $kerohanian = Kerohanian::where('siswa_id', auth()->guard('siswa')->user()->id)->where('tanggal', $request->tanggal)->get();
         if ($kerohanian->count() >= 2) {
 
             return redirect()->back()->with('error', 'Maaf Anda Hanya Bisa Input 2 Kali Dalam 1 Hari');
