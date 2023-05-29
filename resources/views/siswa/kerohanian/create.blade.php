@@ -87,7 +87,7 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="basic-default-name">Laporan Kegiatan</label>
                                 <div class="col-sm-10">
-                                    <textarea name="laporan_kegiatan" id="" rows="3" class="form-control"></textarea>
+                                    <textarea name="laporan_kegiatan" id="" rows="3" class="form-control" required></textarea>
                                 </div>
                             </div>
 
