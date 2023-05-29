@@ -37,6 +37,28 @@ class EkstensifWalasController extends Controller
         ]);
     }
 
+    public function filterEkstensif(Request $request)
+    {
+        $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
+        $warga_kelas = $warga_kelas->pluck('siswa_id');
+
+        $ekstensif = Ekstensif::whereIn('siswa_id', $warga_kelas)
+            ->whereBetween('tanggal', [$request->from, $request->to])
+            ->orderBy('siswa_id', 'ASC')
+            ->get();
+
+        $ekstensif = $ekstensif->groupBy('siswa_id');
+        $ekstensif = $ekstensif->map(function ($query) {
+            return $query->groupBy('isbn');
+        });
+
+        return view('walas.ekstensif.list', [
+            'ekstensif' => $ekstensif,
+            'from' => $request->from,
+            'to' => $request->to
+        ]);
+    }
+
     public function detailEkstensif($siswa_id)
     {
         $ekstensif = Ekstensif::where('siswa_id', $siswa_id)->get();
@@ -83,6 +105,47 @@ class EkstensifWalasController extends Controller
         ]);
     }
 
+    public function filterKetercapaianEkstensif(Request $request)
+    {
+        $jumlah_siswa = 0;
+        $jml_input = 0;
+        $memenuhi = 0;
+        $tidak_memenuhi = 0;
+
+        $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
+        $warga_kelas = $warga_kelas->pluck('siswa_id');
+
+        $ekstensif = Ekstensif::whereIn('siswa_id', $warga_kelas)
+            ->whereBetween('tanggal', [$request->from, $request->to])
+            ->get();
+
+        $ekstensif = $ekstensif->groupBy('siswa_id');
+        $ekstensif = $ekstensif->map(function ($query) {
+            return $query->groupBy('isbn');
+        });
+        $jml_input = $ekstensif->count();
+
+        $jumlah_siswa = $warga_kelas->count();
+        foreach ($ekstensif as $e) {
+            foreach ($e as $a) {
+                if ($e->count() >= 3) {
+                    $memenuhi += 1;
+                    break;
+                }
+            }
+        }
+        $tidak_memenuhi = $jumlah_siswa - $memenuhi;
+
+        return view('walas.ekstensif.ketercapaian', [
+            'jumlah_siswa' => $jumlah_siswa,
+            'memenuhi' => $memenuhi,
+            'tidak_memenuhi' => $tidak_memenuhi,
+            'jml_input' => $jml_input,
+            'from' => $request->from,
+            'to' => $request->to
+        ]);
+    }
+
     public function kerohanian()
     {
         $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
@@ -94,6 +157,24 @@ class EkstensifWalasController extends Controller
 
         return view('walas.kerohanian.list', [
             'rohani' => $kerohanian
+        ]);
+    }
+    public function filterKerohanian(Request $request)
+    {
+        $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
+        $warga_kelas = $warga_kelas->pluck('siswa_id');
+
+        $kerohanian = Kerohanian::whereIn('siswa_id', $warga_kelas)
+            ->whereBetween('tanggal', [$request->from, $request->to])
+            ->orderBy('siswa_id', 'ASC')
+            ->get();
+        $kerohanian = $kerohanian->groupBy('siswa_id');
+        // return $kerohanian;
+
+        return view('walas.kerohanian.list', [
+            'rohani' => $kerohanian,
+            'from' => $request->from,
+            'to' => $request->to
         ]);
     }
 
@@ -127,6 +208,40 @@ class EkstensifWalasController extends Controller
         ]);
     }
 
+    public function filterKetercapaianKerohanian(Request $request)
+    {
+        $jumlah_siswa = 0;
+        $jml_input = 0;
+        $memenuhi = 0;
+        $tidak_memenuhi = 0;
+
+        $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
+        $warga_kelas = $warga_kelas->pluck('siswa_id');
+
+        $kerohanian = Kerohanian::whereIn('siswa_id', $warga_kelas)
+            ->whereBetween('tanggal', [$request->from, $request->to])
+            ->get();
+        $kerohanian = $kerohanian->groupBy('siswa_id');
+        $jumlah_siswa = $warga_kelas->count();
+        $jml_input = $kerohanian->count();
+
+        foreach ($kerohanian as $k) {
+            if ($k->count() >= 48) {
+                $memenuhi += 1;
+            }
+        }
+
+        $tidak_memenuhi = $jumlah_siswa - $memenuhi;
+        return view('walas.kerohanian.ketercapaian', [
+            'jumlah_siswa' => $jumlah_siswa,
+            'memenuhi' => $memenuhi,
+            'tidak_memenuhi' => $tidak_memenuhi,
+            'jml_input' => $jml_input,
+            'from' => $request->from,
+            'to' => $request->to
+        ]);
+    }
+
     public function kunjungan()
     {
         $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
@@ -136,6 +251,23 @@ class EkstensifWalasController extends Controller
 
         return view('walas.kunjungan.list', [
             'kunjungan' => $kunjungan
+        ]);
+    }
+
+    public function filterKunjungan(Request $request)
+    {
+        $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
+        $warga_kelas = $warga_kelas->pluck('siswa_id');
+        $kunjungan = Kunjungan::whereIn('siswa_id', $warga_kelas)
+            ->whereBetween('tanggal', [$request->from, $request->to])
+            ->orderBy('siswa_id', 'ASC')
+            ->get();
+        $kunjungan = $kunjungan->groupBy('siswa_id');
+
+        return view('walas.kunjungan.list', [
+            'kunjungan' => $kunjungan,
+            'from' => $request->from,
+            'to' => $request->to
         ]);
     }
 
@@ -171,6 +303,40 @@ class EkstensifWalasController extends Controller
         ]);
     }
 
+    public function filterKetercapaianKunjungan(Request $request)
+    {
+        $jumlah_siswa = 0;
+        $jml_input = 0;
+        $memenuhi = 0;
+        $tidak_memenuhi = 0;
+
+        $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
+        $warga_kelas = $warga_kelas->pluck('siswa_id');
+        $kunjungan = Kunjungan::whereIn('siswa_id', $warga_kelas)
+            ->whereBetween('tanggal', [$request->from, $request->to])
+            ->get();
+        $kunjungan = $kunjungan->groupBy('siswa_id');
+
+        $jumlah_siswa = $warga_kelas->count();
+        $jml_input = $kunjungan->count();
+
+        foreach ($kunjungan as $k) {
+            if ($k->count() >= 3) {
+                $memenuhi += 1;
+            }
+        }
+
+        $tidak_memenuhi = $jumlah_siswa - $memenuhi;
+        return view('walas.kunjungan.ketercapaian', [
+            'jumlah_siswa' => $jumlah_siswa,
+            'memenuhi' => $memenuhi,
+            'tidak_memenuhi' => $tidak_memenuhi,
+            'jml_input' => $jml_input,
+            'from' => $request->from,
+            'to' => $request->to
+        ]);
+    }
+
     public function detailKunjungan($siswa_id)
     {
         $kunjungan = Kunjungan::where('siswa_id', $siswa_id)->get();
@@ -190,7 +356,8 @@ class EkstensifWalasController extends Controller
         ]);
     }
 
-    public function ketercapaianUkbi(){
+    public function ketercapaianUkbi()
+    {
         $jumlah_siswa = 0;
         $jml_input = 0;
         $memenuhi = 0;

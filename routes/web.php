@@ -149,15 +149,21 @@ Route::get('/walas-review', [EkstensifWalasController::class, 'review'])->middle
 
 // Laporan Ekstensif Walas
 Route::get('/walas-ekstensif', [EkstensifWalasController::class, 'ekstensif'])->middleware('walas');
+Route::post('/walas-filter-ekstensif', [EkstensifWalasController::class, 'filterEkstensif'])->middleware('walas');
 Route::get('/walas-kerohanian', [EkstensifWalasController::class, 'kerohanian'])->middleware('walas');
+Route::post('/walas-kerohanian-filter', [EkstensifWalasController::class, 'filterKerohanian'])->middleware('walas');
 Route::get('/walas-kunjungan', [EkstensifWalasController::class, 'kunjungan'])->middleware('walas');
+Route::post('/walas-kunjungan-filter', [EkstensifWalasController::class, 'filterKunjungan'])->middleware('walas');
 Route::get('/walas-ukbi', [EkstensifWalasController::class, 'ukbi'])->middleware('walas');
 Route::get('/walas-karya', [EkstensifWalasController::class, 'karya'])->middleware('walas');
 Route::get('/walas-kegiatan', [EkstensifWalasController::class, 'kegiatan'])->middleware('walas');
 
 Route::get('/ketercapaian-ekstensif', [EkstensifWalasController::class, 'ketercapaianEkstensif'])->middleware('walas');
+Route::post('/ketercapaian-ekstensif-filter', [EkstensifWalasController::class, 'filterKetercapaianEkstensif'])->middleware('walas');
 Route::get('/ketercapaian-kerohanian', [EkstensifWalasController::class, 'ketercapaianKerohanian'])->middleware('walas');
+Route::post('/ketercapaian-kerohanian-filter', [EkstensifWalasController::class, 'filterKetercapaianKerohanian'])->middleware('walas');
 Route::get('/ketercapaian-kunjungan', [EkstensifWalasController::class, 'ketercapaianKunjungan'])->middleware('walas');
+Route::post('/ketercapaian-kunjungan-filter', [EkstensifWalasController::class, 'filterKetercapaianKunjungan'])->middleware('walas');
 Route::get('/ketercapaian-ukbi', [EkstensifWalasController::class, 'ketercapaianUkbi'])->middleware('walas');
 Route::get('/detail-ekstensif/{siswa_id}', [EkstensifWalasController::class, 'detailEkstensif'])->middleware('walas_inovasi');
 Route::get('/detail-rohani/{siswa_id}', [EkstensifWalasController::class, 'detailKerohanian'])->middleware('walas_inovasi');

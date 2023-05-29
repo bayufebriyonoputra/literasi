@@ -9,6 +9,26 @@
         <h2>Laporan Ketercapaian Kunjungan</h2>
         <p class="text-primary fs-5">Catatan : kriteria ketercapaian kunjungan kerohanian adalah jika murid melakukan 3 kali
             kegiatan kunjungan</p>
+        <p>Filter Berdasarkan Tanggal</p>
+        <form action="/ketercapaian-kunjungan-filter" method="POST">
+            @csrf
+            <div class="row mb-4">
+                <div class="col-md-4 mt-2">
+                    <label for="">Dari</label>
+                    <input type="date" class="form-control" name="from" value="{{ isset($from) ? $from : null }}"
+                        required>
+                </div>
+
+                <div class="col-md-4 mt-2">
+                    <label for="">Sampai</label>
+                    <input type="date" class="form-control" name="to" value="{{ isset($to) ? $to : null }}"
+                        required>
+                </div>
+                <div class="col-md-2 mt-4">
+                    <button type="submit" class="btn btn-primary">Terapkan</button>
+                </div>
+            </div>
+        </form>
         <div class="card">
             <div class="table-responsive text-nowrap">
                 <table class="table">

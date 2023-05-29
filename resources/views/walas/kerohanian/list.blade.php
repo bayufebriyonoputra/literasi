@@ -12,8 +12,8 @@
         }
 
         /* .width-200 {
-                                                                                                width: 200px;
-                                                                                            } */
+                                                                                                        width: 200px;
+                                                                                                    } */
     </style>
 @endsection
 
@@ -23,6 +23,26 @@
         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Modul &nbsp;</span>Laporan Pembiasaan Kerohanian</h4>
         <p class="text-primary fs-5">Catatan : kriteria ketercapaian pembiasaan kerohanian adalah jika telah melakukan 48
             kali kegiatan kerohanian</p>
+        <p>Filter Berdasarkan Tanggal</p>
+        <form action="/walas-kerohanian-filter" method="POST">
+            @csrf
+            <div class="row mb-4">
+                <div class="col-md-4 mt-2">
+                    <label for="">Dari</label>
+                    <input type="date" class="form-control" name="from" value="{{ isset($from) ? $from : null }}"
+                        required>
+                </div>
+
+                <div class="col-md-4 mt-2">
+                    <label for="">Sampai</label>
+                    <input type="date" class="form-control" name="to" value="{{ isset($to) ? $to : null }}"
+                        required>
+                </div>
+                <div class="col-md-2 mt-4">
+                    <button type="submit" class="btn btn-primary">Terapkan</button>
+                </div>
+            </div>
+        </form>
         <div class="table-responsive text-nowrap">
             <table class="table" id="table">
                 <thead>

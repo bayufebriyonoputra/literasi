@@ -13,8 +13,8 @@
         }
 
         /* .width-200 {
-                                                                                                        width: 200px;
-                                                                                                    } */
+                                                                                                                width: 200px;
+                                                                                                            } */
     </style>
 @endsection
 
@@ -22,6 +22,8 @@
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Modul &nbsp;</span>Laporan Kunjungan</h4>
+
+
 
         <div class="table-responsive text-nowrap">
             <table class="table" id="table">
