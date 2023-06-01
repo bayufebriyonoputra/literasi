@@ -45,7 +45,7 @@
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ Carbon\Carbon::parse($k->tanggal)->locale('id_ID')->isoFormat('DD MMMM YYYY') }}</td>
                             <td class="text-wrap width-200">{{ $k->profil_pelajar_pancasila }}</td>
-                            <td class="text-wrap width-200">{{ $k->tempat->tempat }}</td>
+                            <td class="text-wrap width-200">{{ $k->tempat->tempat ?? 'Data tempat dihapus' }}</td>
                             <td class="text-wrap width-200">{{ $k->nama_tempat }}</td>
                             <td class="text-wrap width-200">{{ $k->keterangan }}</td>
                             <td class="text-wrap width-200">{{ $k->hasil_kunjungan }}</td>
