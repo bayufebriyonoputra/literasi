@@ -12,8 +12,8 @@
         }
 
         /* .width-200 {
-                                                                            width: 200px;
-                                                                        } */
+                                                                                width: 200px;
+                                                                            } */
     </style>
 @endsection
 
@@ -26,15 +26,26 @@
             @csrf
             <div class="row">
                 <div class="col-md-10">
-                    <select name="kelas_id" class="form-select">
-                        <option value="" disabled selected>Semua</option>
+                    <select name="kelas_id" class="form-select" required>
+                        <option value="all" selected>Semua</option>
                         @foreach ($kelas as $k)
-                            <option value="{{ $k->id }}}">{{ $k->nama_kelas }}</option>
+                            <option value="{{ $k->id }}" {{ $k->id == $kelas_id ? 'selected' : '' }}>
+                                {{ $k->nama_kelas }}</option>
                         @endforeach
                     </select>
                 </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                <div class="col-md-4 mt-2">
+                    <label for="">Dari</label>
+                    <input type="date" class="form-control" name="from" value="{{ isset($from) ? $from : null }}">
+                </div>
+
+                <div class="col-md-4 mt-2">
+                    <label for="">Sampai</label>
+                    <input type="date" class="form-control" name="to" value="{{ isset($to) ? $to : null }}">
+                </div>
+                <div class="col-md-2 mt-4">
+                    <button type="submit" class="btn btn-primary">Terapkan</button>
                 </div>
             </div>
         </form>

@@ -27,7 +27,8 @@ class GeneralTimLiterasiController extends Controller
         $kelas = Kelas::orderBy('nama_kelas')->get();
         return view('tim_literasi.ekstensif.list', [
             'ekstensif' => $ekstensif,
-            'kelas' => $kelas
+            'kelas' => $kelas,
+            'kelas_id' => null
         ]);
     }
 
@@ -37,14 +38,26 @@ class GeneralTimLiterasiController extends Controller
         $warga_kelas = $warga_kelas->pluck('siswa_id');
         $kelas = Kelas::orderBy('nama_kelas')->get();
 
-        $ekstensif = Ekstensif::whereIn('siswa_id', $warga_kelas)->get();
+        if ($request->kelas_id != 'all') {
+            $ekstensif = Ekstensif::whereIn('siswa_id', $warga_kelas)->get();
+        } else {
+            $ekstensif = Ekstensif::all();
+        }
+
+        if ($request->from && $request->to) {
+            $ekstensif = $ekstensif->whereBetween('tanggal', [$request->from, $request->to]);
+        }
+
         $ekstensif = $ekstensif->groupBy('siswa_id');
         $ekstensif = $ekstensif->map(function ($query) {
             return $query->groupBy('isbn');
         });
         return view('tim_literasi.ekstensif.list', [
             'ekstensif' => $ekstensif,
-            'kelas' => $kelas
+            'kelas' => $kelas,
+            'from' => $request->from ?? null,
+            'to' => $request->to ?? null,
+            'kelas_id' => $request->kelas_id
         ]);
     }
 
@@ -90,12 +103,23 @@ class GeneralTimLiterasiController extends Controller
         $memenuhi = 0;
         $tidak_memenuhi = 0;
 
-        $ekstensif = Ekstensif::whereIn('siswa_id', $warga_kelas)->get();
+        if ($request->kelas_id != 'all') {
+            $ekstensif = Ekstensif::whereIn('siswa_id', $warga_kelas)->get();
+            $jumlah_siswa = Siswa::whereIn('id', $warga_kelas)->count();
+        } else {
+            $ekstensif = Ekstensif::all();
+            $jumlah_siswa = Siswa::all()->count();
+        }
+
+        if ($request->from && $request->to) {
+            $ekstensif = $ekstensif->whereBetween('tanggal', [$request->from, $request->to]);
+        }
+
         $ekstensif = $ekstensif->groupBy('siswa_id');
 
         $kelas = Kelas::orderBy('nama_kelas')->get();
 
-        $jumlah_siswa = Siswa::whereIn('id', $warga_kelas)->count();
+
         $jml_input = $ekstensif->count();
 
         foreach ($ekstensif as $k) {
@@ -133,7 +157,9 @@ class GeneralTimLiterasiController extends Controller
             'tidak_memenuhi' => $tidak_memenuhi,
             'jml_input' => $jml_input,
             'kelas' => $kelas,
-            'kelas_id' => $request->kelas_id
+            'kelas_id' => $request->kelas_id,
+            'from' => $request->from ?? null,
+            'to' => $request->to ?? null
         ]);
     }
 
@@ -144,7 +170,8 @@ class GeneralTimLiterasiController extends Controller
         $kelas = Kelas::orderBy('nama_kelas')->get();
         return view('tim_literasi.kerohanian.list', [
             'rohani' => $kerohanian,
-            'kelas' => $kelas
+            'kelas' => $kelas,
+            'kelas_id' => null
         ]);
     }
 
@@ -154,11 +181,23 @@ class GeneralTimLiterasiController extends Controller
         $warga_kelas = $warga_kelas->pluck('siswa_id');
         $kelas = Kelas::orderBy('nama_kelas')->get();
 
-        $kerohanian = Kerohanian::whereIn('siswa_id', $warga_kelas)->get();
+        if ($request->kelas_id != 'all') {
+            $kerohanian = Kerohanian::whereIn('siswa_id', $warga_kelas)->get();
+        } else {
+            $kerohanian = Kerohanian::all();
+        }
+
+        if ($request->from && $request->to) {
+            $kerohanian = $kerohanian->whereBetween('tanggal', [$request->from, $request->to]);
+        }
+
         $kerohanian = $kerohanian->groupBy('siswa_id');
         return view('tim_literasi.kerohanian.list', [
             'rohani' => $kerohanian,
-            'kelas' => $kelas
+            'kelas' => $kelas,
+            'from' => $request->from ?? null,
+            'to' => $request->to ?? null,
+            'kelas_id' => $request->kelas_id
         ]);
     }
 
@@ -206,10 +245,21 @@ class GeneralTimLiterasiController extends Controller
 
         $kelas = Kelas::orderBy('nama_kelas')->get();
 
-        $kerohanian = Kerohanian::whereIn('siswa_id', $warga_kelas)->get();
+        if ($request->kelas_id != 'all') {
+            $kerohanian = Kerohanian::whereIn('siswa_id', $warga_kelas)->get();
+            $jumlah_siswa = Siswa::whereIn('id', $warga_kelas)->count();
+        } else {
+            $kerohanian = Kerohanian::all();
+            $jumlah_siswa = Siswa::all()->count();
+        }
+
+        if ($request->from && $request->to) {
+            $kerohanian = $kerohanian->whereBetween('tanggal', [$request->from, $request->to]);
+        }
+
         $kerohanian = $kerohanian->groupBy('siswa_id');
 
-        $jumlah_siswa = Siswa::whereIn('id', $warga_kelas)->count();
+
         $jml_input = $kerohanian->count();
 
         foreach ($kerohanian as $k) {
@@ -245,7 +295,9 @@ class GeneralTimLiterasiController extends Controller
             'tidak_memenuhi' => $tidak_memenuhi,
             'jml_input' => $jml_input,
             'kelas' => $kelas,
-            'kelas_id' => $request->kelas_id
+            'kelas_id' => $request->kelas_id,
+            'from' => $request->from ?? null,
+            'to' => $request->to ?? null
         ]);
     }
 
@@ -256,7 +308,8 @@ class GeneralTimLiterasiController extends Controller
         $kelas = Kelas::orderBy('nama_kelas')->get();
         return view('tim_literasi.kunjungan.list', [
             'kunjungan' => $kunjungan,
-            'kelas' => $kelas
+            'kelas' => $kelas,
+            'kelas_id' => null
         ]);
     }
 
@@ -266,11 +319,22 @@ class GeneralTimLiterasiController extends Controller
         $warga_kelas = $warga_kelas->pluck('siswa_id');
         $kelas = Kelas::orderBy('nama_kelas')->get();
 
-        $kunjungan = Kunjungan::whereIn('siswa_id', $warga_kelas)->get();
+        if ($request->kelas_id != 'all') {
+            $kunjungan = Kunjungan::whereIn('siswa_id', $warga_kelas)->get();
+        } else {
+            $kunjungan = Kunjungan::all();
+        }
+
+        if ($request->from && $request->to) {
+            $kunjungan = $kunjungan->whereBetween('tanggal', [$request->from, $request->to]);
+        }
         $kunjungan = $kunjungan->groupBy('siswa_id');
         return view('tim_literasi.kunjungan.list', [
             'kelas' => $kelas,
-            'kunjungan' => $kunjungan
+            'kunjungan' => $kunjungan,
+            'kelas_id' => $request->kelas_id,
+            'from' => $request->from ?? null,
+            'to' => $request->to ?? null
         ]);
     }
 
@@ -316,13 +380,23 @@ class GeneralTimLiterasiController extends Controller
         $memenuhi = 0;
         $tidak_memenuhi = 0;
 
-        $kunjungan = Kunjungan::whereIn('siswa_id', $warga_kelas)->get();
+        if ($request->kelas_id != 'all') {
+            $kunjungan = Kunjungan::whereIn('siswa_id', $warga_kelas)->get();
+            $jumlah_siswa = Siswa::whereIn('id', $warga_kelas)->count();
+        } else {
+            $kunjungan = Kunjungan::all();
+            $jumlah_siswa = Siswa::all()->count();
+        }
+
+        if ($request->from && $request->to) {
+            $kunjungan = $kunjungan->whereBetween('tanggal', [$request->from, $request->to]);
+        }
         $kunjungan = $kunjungan->groupBy('siswa_id');
 
 
         $kelas = Kelas::orderBy('nama_kelas')->get();
 
-        $jumlah_siswa = Siswa::whereIn('id', $warga_kelas)->count();
+
         $jml_input = $kunjungan->count();
 
         foreach ($kunjungan as $k) {
@@ -358,7 +432,9 @@ class GeneralTimLiterasiController extends Controller
             'tidak_memenuhi' => $tidak_memenuhi,
             'jml_input' => $jml_input,
             'kelas' => $kelas,
-            'kelas_id' => $request->kelas_id
+            'kelas_id' => $request->kelas_id,
+            'from' => $request->from ?? null,
+            'to' => $request->to ?? null
         ]);
     }
 
@@ -368,7 +444,8 @@ class GeneralTimLiterasiController extends Controller
         $kelas = Kelas::orderBy('nama_kelas')->get();
         return view('tim_literasi.ukbi.list', [
             'ukbi' => $ukbi,
-            'kelas' => $kelas
+            'kelas' => $kelas,
+            'kelas_id' => null
         ]);
     }
 
@@ -378,10 +455,20 @@ class GeneralTimLiterasiController extends Controller
         $warga_kelas = $warga_kelas->pluck('siswa_id');
         $kelas = Kelas::orderBy('nama_kelas')->get();
 
-        $ukbi = UKBI::whereIn('siswa_id', $warga_kelas)->get();
+        if($request->kelas_id != 'all'){
+            $ukbi = UKBI::whereIn('siswa_id', $warga_kelas)->get();
+        }else{
+            $ukbi = UKBI::all();
+        }
+
+        if($request->from && $request->to){
+            $ukbi = $ukbi->whereBetween('tanggal_tes', [$request->from, $request->to]);
+        }
+
         return view('tim_literasi.ukbi.list', [
             'ukbi' => $ukbi,
-            'kelas' => $kelas
+            'kelas' => $kelas,
+            'kelas_id' => $request->kelas_id
         ]);
     }
 
@@ -425,11 +512,20 @@ class GeneralTimLiterasiController extends Controller
         $memenuhi = 0;
         $tidak_memenuhi = 0;
 
-        $ukbi = UKBI::whereIn('siswa_id', $warga_kelas);
+        if($request->kelas_id != 'all'){
+            $ukbi = UKBI::whereIn('siswa_id', $warga_kelas);
+            $jumlah_siswa = Siswa::whereIn('id', $warga_kelas)->count();
+        }else{
+            $ukbi = UKBI::all();
+            $jumlah_siswa = Siswa::all()->count();
+        }
+
+        if($request->from && $request->id){
+            $ukbi = $ukbi->whereBetween('tanggal_tes', [$request->from,$request->to]);
+        }
 
         $kelas = Kelas::orderBy('nama_kelas')->get();
 
-        $jumlah_siswa = Siswa::whereIn('id', $warga_kelas)->count();
         $jml_input = $ukbi->count();
 
         foreach ($ukbi as $k) {
@@ -476,7 +572,8 @@ class GeneralTimLiterasiController extends Controller
         $kelas = Kelas::orderBy('nama_kelas')->get();
         return view('tim_literasi.kegiatan.list', [
             'kegiatan' => $kegiatan,
-            'kelas' => $kelas
+            'kelas' => $kelas,
+            'kelas_id' => null
         ]);
     }
 
@@ -486,11 +583,23 @@ class GeneralTimLiterasiController extends Controller
         $warga_kelas = $warga_kelas->pluck('siswa_id');
         $kelas = Kelas::orderBy('nama_kelas')->get();
 
-        $kegiatan = KegiatanSiswa::whereIn('siswa_id', $warga_kelas)->get();
+        if($request->kelas_id != 'all'){
+            $kegiatan = KegiatanSiswa::whereIn('siswa_id', $warga_kelas)->get();
+        }else{
+            $kegiatan = KegiatanSiswa::all();
+        }
+
+        if($request->from && $request->to){
+            $kegiatan = $kegiatan->whereBetween('tanggal', [$request->from, $request->to]);
+        }
+
         $kegiatan = $kegiatan->groupBy('siswa_id');
         return view('tim_literasi.kegiatan.list', [
             'kegiatan' => $kegiatan,
-            'kelas' => $kelas
+            'kelas' => $kelas,
+            'kelas_id' => $request->kelas_id,
+            'from' => $request->from ?? null,
+            'to' => $request->to ?? null
         ]);
     }
 
@@ -552,13 +661,24 @@ class GeneralTimLiterasiController extends Controller
         $warga_kelas = $warga_kelas->pluck('siswa_id');
         $kelas = Kelas::orderBy('nama_kelas')->get();
 
-        $karya = UnggahKarya::whereIn('siswa_id', $warga_kelas)->get();
+        if ($request->kelas_id != 'all') {
+            $karya = UnggahKarya::whereIn('siswa_id', $warga_kelas)->get();
+        } else {
+            $karya = UnggahKarya::all();
+        }
+
+        if($request->from && $request->to){
+            $karya = $karya->whereBetween('created_at', [$request->from, $request->to]);
+        }
+
         $karya = $karya->groupBy('siswa_id');
 
         return view('tim_literasi.karya.list', [
             'karya' => $karya,
             'kelas' => $kelas,
-            'kelas_id' => $request->kelas_id
+            'kelas_id' => $request->kelas_id,
+            'from' => $request->from ?? null,
+            'to' => $request->to ?? null
         ]);
     }
 
