@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('file_karya');
             $table->string('status_kurasi');
             $table->string('review')->nullable();
+            $table->string('tahun_pelajaran', 10);
             $table->timestamps();
         });
     }

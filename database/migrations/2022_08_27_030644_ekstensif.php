@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('judul_buku');
             $table->string('jumlah_halaman')->nullable();
             $table->text('rangkuman');
+            $table->string('tahun_pelajaran', 10);
             $table->timestamps();
         });
     }

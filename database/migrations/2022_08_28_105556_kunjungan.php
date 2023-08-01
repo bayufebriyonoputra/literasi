@@ -23,6 +23,7 @@ return new class extends Migration
             $table->text('keterangan');
             $table->text('hasil_kunjungan');
             $table->string('file_foto');
+            $table->string('tahun_pelajaran', 10);
             $table->timestamps();
         });
     }

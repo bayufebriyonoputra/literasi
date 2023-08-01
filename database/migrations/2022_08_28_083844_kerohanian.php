@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('agama');
             $table->foreignId('data_kerohanian_id');
             $table->text('laporan_kegiatan');
+            $table->string('tahun_pelajaran', 10);
             $table->timestamps();
         });
     }

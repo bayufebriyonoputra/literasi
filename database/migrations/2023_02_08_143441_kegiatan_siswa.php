@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('nama_kegiatan');
             $table->text('deskripsi');
             $table->text('foto');
+            $table->string('tahun_pelajaran', 10);
             $table->timestamps();
         });
     }

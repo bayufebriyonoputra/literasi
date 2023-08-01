@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('tanggal_tes');
             $table->integer('skor');
             $table->string('sertifikat');
+            $table->string('tahun_pelajran', 10);
             $table->timestamps();
         });
     }
