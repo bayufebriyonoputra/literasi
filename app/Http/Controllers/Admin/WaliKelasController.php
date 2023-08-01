@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\WaliKelas;
-use App\Http\Controllers\Controller;
 use App\Models\Guru;
 use App\Models\Kelas;
+use App\Models\WaliKelas;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
 
 class WaliKelasController extends Controller
 {
@@ -45,11 +46,27 @@ class WaliKelasController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'kelas_id' => 'required|unique:wali_kelas,kelas_id',
-            'guru_id' => 'required|unique:wali_kelas,guru_id',
-            'tahun_pelajaran' => 'required'
-        ]);
+        $data = WaliKelas::where('guru_id', $request->input('guru_id'))->get();
+        $data  = $data->pluck('tahun_pelajaran')->toArray();
+
+        if (in_array($request->input('tahun_pelajaran'), $data)) {
+            $validatedData = $request->validate(
+                [
+                    'kelas_id' => ['required', 'unique:wali_kelas,kelas_id'],
+                    'guru_id' => ['required', 'unique:wali_kelas,guru_id'],
+                    'tahun_pelajaran' => 'required'
+                ],
+                [
+                    'guru_id.unique' => 'Wali Kelas Terdaftar Pada Tahun Pelajaran Yang Sama'
+                ]
+            );
+        } else {
+            $validatedData =  $request->validate([
+                'kelas_id' => 'required',
+                'guru_id' => 'required',
+                'tahun_pelajaran' => 'required'
+            ]);
+        }
 
         Guru::where('id', $request->guru_id)->update([
             'walas' => true
@@ -102,7 +119,7 @@ class WaliKelasController extends Controller
     public function destroy(WaliKelas $admin_wala)
     {
         Guru::where('id', $admin_wala->guru_id)->update([
-            'bk' => false
+            'walas' => false
         ]);
 
         WaliKelas::where('id', $admin_wala->id)

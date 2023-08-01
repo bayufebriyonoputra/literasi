@@ -3,6 +3,8 @@
 @section('head')
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css" />
     <link rel="stylesheet" href="{{ asset('dselect/css/dselect.min.css') }}">
+    <script src="{{ asset('sweet-alert/sweet_alert.all.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('sweet-alert/sweet_alert.min.css') }}">
 @endsection
 
 @section('content')
@@ -15,6 +17,17 @@
         </div>
         <div class="toast-body">{{ session('success') ? session('success') : '' }}</div>
     </div>
+
+    @if ($errors->any())
+        <script>
+            Swal.fire(
+                'Gagal',
+                'Wali Kelas Sudah Terdaftar Pada Tahun Pelajaran Yang Sama',
+                'error'
+            )
+        </script>
+    @endif
+
 
     <div class="container">
         {{-- Modal --}}
