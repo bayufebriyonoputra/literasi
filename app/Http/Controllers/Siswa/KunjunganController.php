@@ -57,6 +57,7 @@ class KunjunganController extends Controller
         ]);
 
         $validetData['siswa_id'] = auth()->guard('siswa')->user()->id;
+        $validatedData['tahun_pelajaran'] = getAcademicYear(now());
         $validetData['file_foto'] = Storage::disk('public_uploads')->put('foto kunjungan', $request->file('file_foto'));
         Kunjungan::create($validetData);
         return back()->with('success', 'Data telah ditambahkan');

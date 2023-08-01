@@ -51,6 +51,7 @@ class UnggahKaryaController extends Controller
             'karya_id' => $request->karya_id,
             'file_karya' => Storage::disk('public_uploads')->put('File Karya', $request->file_karya),
             'status_kurasi' => 'Belum Di Kurasi',
+            'tahun_pelajaran' => getAcademicYear(now())
 
         ];
 

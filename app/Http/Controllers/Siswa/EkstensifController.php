@@ -49,6 +49,7 @@ class EkstensifController extends Controller
             'rangkuman' => ['required', new wordCount(100)]
         ]);
         $validatedData['siswa_id'] = auth()->guard('siswa')->user()->id;
+        $validatedData['tahun_pelajaran'] = getAcademicYear(now());
         $eks = Ekstensif::create($validatedData);
         if ($eks) return back()->with('success', 'Data berhasil ditambahkan');
 

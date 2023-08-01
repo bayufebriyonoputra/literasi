@@ -27,6 +27,7 @@ class KegiatanSiswaController extends Controller
 
         $validatedData['foto'] = Storage::disk('public_uploads')->put('Foto_Kegiatan', $request->file('foto'));
         $validatedData['siswa_id'] = $siswa_id;
+        $validatedData['tahun_pelajaran'] = getAcademicYear(now());
         KegiatanSiswa::create($validatedData);
 
         return redirect()->back()->with('success', 'Data berhasil ditambahkan');

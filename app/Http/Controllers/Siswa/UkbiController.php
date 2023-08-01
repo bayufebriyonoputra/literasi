@@ -44,7 +44,8 @@ class UkbiController extends Controller
             'siswa_id' => auth()->guard('siswa')->user()->id,
             'tanggal_tes' => $request->tanggal,
             'skor' => $request->skor,
-            'sertifikat' => Storage::disk('public_uploads')->put('foto karya', $request->file('sertifikat'))
+            'sertifikat' => Storage::disk('public_uploads')->put('foto karya', $request->file('sertifikat')),
+            'tahun_pelajaran' => getAcademicYear(now())
 
         ];
         UKBI::create($data);

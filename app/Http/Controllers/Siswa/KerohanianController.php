@@ -53,6 +53,7 @@ class KerohanianController extends Controller
             'laporan_kegiatan' => 'required'
         ]);
         $validatedData['siswa_id'] = auth()->guard('siswa')->user()->id;
+        $validatedData['tahun_pelajaran'] = getAcademicYear(now());
 
         $not = Kerohanian::create($validatedData);
         if ($not)  return back()->with('success', 'Data berhasil ditambahkan');
