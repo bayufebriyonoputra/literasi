@@ -72,10 +72,8 @@ Route::get('/literasi-gantipass', [LoginController::class, 'changePassLiterasi']
 Route::get('/walas-gantipass', [LoginController::class, 'changePassWalas'])->middleware('walas');
 
 Route::get('/test', function () {
-    $rohani = DataKerohanian::where('agama', 'Islam')->get();
-    $rohani = $rohani->pluck('kegiatan', 'id');
 
-    return $rohani;
+    return getAcademicYear(now());
 });
 
 
