@@ -11,7 +11,7 @@ class TugasController extends Controller
 {
     public function ekstensif()
     {
-        $kelas = WargaKelas::where('siswa_id', auth()->guard('siswa')->user()->id)->first();
+        $kelas = WargaKelas::where('siswa_id', auth()->guard('siswa')->user()->id)->latest()->first();
         // return $kelas->kelas->tingkat;
         if (!$kelas) {
             abort(404, 'Anda Belum Terdaftar Di kelas hubungi administrator');
@@ -32,7 +32,7 @@ class TugasController extends Controller
 
     public function kerohanian()
     {
-        $kelas = WargaKelas::where('siswa_id', auth()->guard('siswa')->user()->id)->first();
+        $kelas = WargaKelas::where('siswa_id', auth()->guard('siswa')->user()->id)->latest()->first();
         if (!$kelas) {
             abort(404, 'Anda Belum Terdaftar Di kelas hubungi administrator');
         }
@@ -50,7 +50,7 @@ class TugasController extends Controller
 
     public function kunjungan()
     {
-        $kelas = WargaKelas::where('siswa_id', auth()->guard('siswa')->user()->id)->first();
+        $kelas = WargaKelas::where('siswa_id', auth()->guard('siswa')->user()->id)->latest()->first();
         if (!$kelas) {
             abort(404, 'Anda Belum Terdaftar Di kelas hubungi administrator');
         }
@@ -68,7 +68,7 @@ class TugasController extends Controller
 
     public function ukbi()
     {
-        $kelas = WargaKelas::where('siswa_id', auth()->guard('siswa')->user()->id)->first();
+        $kelas = WargaKelas::where('siswa_id', auth()->guard('siswa')->user()->id)->latest()->first();
         if (!$kelas) {
             abort(404, 'Anda Belum Terdaftar Di kelas hubungi administrator');
         }
@@ -87,7 +87,7 @@ class TugasController extends Controller
 
     public function karya()
     {
-        $kelas = WargaKelas::where('siswa_id', auth()->guard('siswa')->user()->id)->first();
+        $kelas = WargaKelas::where('siswa_id', auth()->guard('siswa')->user()->id)->latest()->first();
         if (!$kelas) {
             abort(404, 'Anda Belum Terdaftar Di kelas hubungi administrator');
         }

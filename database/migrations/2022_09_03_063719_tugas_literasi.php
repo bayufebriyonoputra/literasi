@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('tugas');
             $table->string('keterangan');
             $table->string('jenis_tugas');
+            $table->string('tahun_pelajaran', 10);
             $table->timestamps();
         });
     }

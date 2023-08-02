@@ -66,7 +66,8 @@ class TugasTimLiterasiController extends Controller
                     'tingkat' => $request->kelas_id,
                     'tugas' => $request->tugas,
                     'keterangan' => $request->keterangan,
-                    'jenis_tugas' => $request->jenis_tugas
+                    'jenis_tugas' => $request->jenis_tugas,
+                    'tahun_pelajaran' => getAcademicYear(now())
                 ];
             } else {
                 $data = [
@@ -75,7 +76,8 @@ class TugasTimLiterasiController extends Controller
                     'tingkat' => (int) filter_var($request->kelas_id, FILTER_SANITIZE_NUMBER_INT),
                     'tugas' => $request->tugas,
                     'keterangan' => $request->keterangan,
-                    'jenis_tugas' => $request->jenis_tugas
+                    'jenis_tugas' => $request->jenis_tugas,
+                    'tahun_pelajaran' => getAcademicYear(now())
                 ];
             }
         } else {
@@ -85,7 +87,8 @@ class TugasTimLiterasiController extends Controller
                 'kelas_id' => $request->kelas_id,
                 'tugas' => $request->tugas,
                 'keterangan' => $request->keterangan,
-                'jenis_tugas' => $request->jenis_tugas
+                'jenis_tugas' => $request->jenis_tugas,
+                'tahun_pelajaran' => getAcademicYear(now())
             ];
         }
 
