@@ -266,7 +266,7 @@ class EkstensifWalasController extends Controller
                 ->get();
         } else {
             $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)
-                ->where('tahun_pelajaran' , $request->input('tahun_pelajaran'))
+                ->where('tahun_pelajaran', $request->input('tahun_pelajaran'))
                 ->get();
             $warga_kelas = $warga_kelas->pluck('siswa_id');
 
@@ -306,24 +306,41 @@ class EkstensifWalasController extends Controller
         $kunjungan = $kunjungan->groupBy('siswa_id');
 
         return view('walas.kunjungan.list', [
-            'kunjungan' => $kunjungan
+            'kunjungan' => $kunjungan,
+            'list_tapel' => array_reverse(getAcademicYearsList()),
+            'selected_tapel' => null
         ]);
     }
 
     public function filterKunjungan(Request $request)
     {
-        $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
-        $warga_kelas = $warga_kelas->pluck('siswa_id');
-        $kunjungan = Kunjungan::whereIn('siswa_id', $warga_kelas)
-            ->whereBetween('tanggal', [$request->from, $request->to])
-            ->orderBy('siswa_id', 'ASC')
-            ->get();
+
+        if ($request->input('tahun_pelajaran') == 'all') {
+            $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
+            $warga_kelas = $warga_kelas->pluck('siswa_id');
+            $kunjungan = Kunjungan::whereIn('siswa_id', $warga_kelas)
+                ->whereBetween('tanggal', [$request->from, $request->to])
+                ->orderBy('siswa_id', 'ASC')
+                ->get();
+        } else {
+            $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)
+                ->where('tahun_pelajaran', $request->input('tahun_pelajaran'))
+                ->get();
+            $warga_kelas = $warga_kelas->pluck('siswa_id');
+            $kunjungan = Kunjungan::whereIn('siswa_id', $warga_kelas)
+                ->whereBetween('tanggal', [$request->from, $request->to])
+                ->where('tahun_pelajaran', $request->input('tahun_pelajaran'))
+                ->orderBy('siswa_id', 'ASC')
+                ->get();
+        }
         $kunjungan = $kunjungan->groupBy('siswa_id');
 
         return view('walas.kunjungan.list', [
             'kunjungan' => $kunjungan,
             'from' => $request->from,
-            'to' => $request->to
+            'to' => $request->to,
+            'list_tapel' => array_reverse(getAcademicYearsList()),
+            'selected_tapel' => $request->input('tahun_pelajaran')
         ]);
     }
 
@@ -355,7 +372,9 @@ class EkstensifWalasController extends Controller
             'jumlah_siswa' => $jumlah_siswa,
             'memenuhi' => $memenuhi,
             'tidak_memenuhi' => $tidak_memenuhi,
-            'jml_input' => $jml_input
+            'jml_input' => $jml_input,
+            'list_tapel' => array_reverse(getAcademicYearsList()),
+            'selected_tapel' => null
         ]);
     }
 
@@ -366,11 +385,24 @@ class EkstensifWalasController extends Controller
         $memenuhi = 0;
         $tidak_memenuhi = 0;
 
-        $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
-        $warga_kelas = $warga_kelas->pluck('siswa_id');
-        $kunjungan = Kunjungan::whereIn('siswa_id', $warga_kelas)
-            ->whereBetween('tanggal', [$request->from, $request->to])
-            ->get();
+
+
+        if ($request->input('tahun_pelajaran') == 'all') {
+            $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
+            $warga_kelas = $warga_kelas->pluck('siswa_id');
+            $kunjungan = Kunjungan::whereIn('siswa_id', $warga_kelas)
+                ->whereBetween('tanggal', [$request->from, $request->to])
+                ->get();
+        } else {
+            $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)
+                ->where('tahun_pelajaran', $request->input('tahun_pelajaran'))
+                ->get();
+            $warga_kelas = $warga_kelas->pluck('siswa_id');
+            $kunjungan = Kunjungan::whereIn('siswa_id', $warga_kelas)
+                ->whereBetween('tanggal', [$request->from, $request->to])
+                ->where('tahun_pelajaran', $request->input('tahun_pelajaran'))
+                ->get();
+        }
         $kunjungan = $kunjungan->groupBy('siswa_id');
 
         $jumlah_siswa = $warga_kelas->count();
@@ -389,7 +421,9 @@ class EkstensifWalasController extends Controller
             'tidak_memenuhi' => $tidak_memenuhi,
             'jml_input' => $jml_input,
             'from' => $request->from,
-            'to' => $request->to
+            'to' => $request->to,
+            'list_tapel' => array_reverse(getAcademicYearsList()),
+            'selected_tapel' => $request->input('tahun_pelajaran')
         ]);
     }
 
