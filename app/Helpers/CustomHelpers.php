@@ -19,3 +19,20 @@ function getAcademicYear($date)
     // Formatkan tahun ajaran dalam output yang diinginkan
     return $startYear . '/' . $endYear;
 }
+
+// Fungsi mendapatkan Lst tahun pelajaran
+function getAcademicYearsList()
+{
+    $currentYear = date('Y');
+    $startYear = 2021;
+    $academicYears = [];
+
+    while ($startYear <= $currentYear) {
+        $endYear = $startYear + 1;
+        $academicYear = "{$startYear}/{$endYear}";
+        $academicYears[] = $academicYear;
+        $startYear++;
+    }
+
+    return $academicYears;
+}

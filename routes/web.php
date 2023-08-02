@@ -73,7 +73,7 @@ Route::get('/walas-gantipass', [LoginController::class, 'changePassWalas'])->mid
 
 Route::get('/test', function () {
 
-    return getAcademicYear(now());
+    return collect(getAcademicYearsList());
 });
 
 
