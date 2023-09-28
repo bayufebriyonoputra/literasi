@@ -19,7 +19,7 @@ class GeneralTimLiterasiController extends Controller
 {
     public function ekstensif()
     {
-        $ekstensif = Ekstensif::all();
+        $ekstensif = Ekstensif::where('tahun_pelajaran', getAcademicYear(now()))->get();
         $ekstensif = $ekstensif->groupBy('siswa_id');
         $ekstensif = $ekstensif->map(function ($query) {
             return $query->groupBy('isbn');
@@ -28,15 +28,26 @@ class GeneralTimLiterasiController extends Controller
         return view('tim_literasi.ekstensif.list', [
             'ekstensif' => $ekstensif,
             'kelas' => $kelas,
-            'kelas_id' => null
+            'kelas_id' => null,
+            'list_tapel' => array_reverse(getAcademicYearsList()),
+            'selected_tapel' => getAcademicYear(now())
         ]);
     }
 
     public function filterEkstensif(Request $request)
     {
-        $warga_kelas = WargaKelas::where('kelas_id', $request->kelas_id);
-        $warga_kelas = $warga_kelas->pluck('siswa_id');
-        $kelas = Kelas::orderBy('nama_kelas')->get();
+
+
+        if ($request->tahun_pelajaran != 'all') {
+            $warga_kelas = WargaKelas::where('kelas_id', $request->kelas_id)
+                ->where('tahun_pelajaran', $request->tahun_pelajaran);
+            $warga_kelas = $warga_kelas->pluck('siswa_id');
+            $kelas = Kelas::orderBy('nama_kelas')->get();
+        } else {
+            $warga_kelas = WargaKelas::where('kelas_id', $request->kelas_id);
+            $warga_kelas = $warga_kelas->pluck('siswa_id');
+            $kelas = Kelas::orderBy('nama_kelas')->get();
+        }
 
         if ($request->kelas_id != 'all') {
             $ekstensif = Ekstensif::whereIn('siswa_id', $warga_kelas)->get();
@@ -48,6 +59,10 @@ class GeneralTimLiterasiController extends Controller
             $ekstensif = $ekstensif->whereBetween('tanggal', [$request->from, $request->to]);
         }
 
+        if ($request->tahun_pelajaran != 'all') {
+            $ekstensif = $ekstensif->where('tahun_pelajaran', $request->tahun_pelajaran);
+        }
+
         $ekstensif = $ekstensif->groupBy('siswa_id');
         $ekstensif = $ekstensif->map(function ($query) {
             return $query->groupBy('isbn');
@@ -57,7 +72,9 @@ class GeneralTimLiterasiController extends Controller
             'kelas' => $kelas,
             'from' => $request->from ?? null,
             'to' => $request->to ?? null,
-            'kelas_id' => $request->kelas_id
+            'kelas_id' => $request->kelas_id,
+            'list_tapel' => array_reverse(getAcademicYearsList()),
+            'selected_tapel' => $request->tahun_pelajaran
         ]);
     }
 
@@ -68,7 +85,7 @@ class GeneralTimLiterasiController extends Controller
         $memenuhi = 0;
         $tidak_memenuhi = 0;
 
-        $ekstensif = Ekstensif::all();
+        $ekstensif = Ekstensif::where('tahun_pelajaran', getAcademicYear(now()))->get();
         $ekstensif = $ekstensif->groupBy('siswa_id');
 
         $kelas = Kelas::orderBy('nama_kelas')->get();
@@ -89,13 +106,18 @@ class GeneralTimLiterasiController extends Controller
             'tidak_memenuhi' => $tidak_memenuhi,
             'jml_input' => $jml_input,
             'kelas' => $kelas,
-            'kelas_id' => null
+            'kelas_id' => null,
+            'list_tapel' => array_reverse(getAcademicYearsList()),
+            'selected_tapel' => getAcademicYear(now())
         ]);
     }
 
     public function filterKetercapaianEkstensif(Request $request)
     {
         $warga_kelas = WargaKelas::where('kelas_id', $request->kelas_id);
+        if ($request->tahun_pelajaran !== 'all') {
+            $warga_kelas = $warga_kelas->where('tahun_pelajaran', $request->tahun_pelajaran);
+        }
         $warga_kelas = $warga_kelas->pluck('siswa_id');
 
         $jumlah_siswa = 0;
@@ -113,6 +135,10 @@ class GeneralTimLiterasiController extends Controller
 
         if ($request->from && $request->to) {
             $ekstensif = $ekstensif->whereBetween('tanggal', [$request->from, $request->to]);
+        }
+
+        if($request->tahun_pelajaran){
+            $ekstensif = $ekstensif->where('tahun_pelajaran', $request->tahun_pelajaran);
         }
 
         $ekstensif = $ekstensif->groupBy('siswa_id');
@@ -159,18 +185,22 @@ class GeneralTimLiterasiController extends Controller
             'kelas' => $kelas,
             'kelas_id' => $request->kelas_id,
             'from' => $request->from ?? null,
-            'to' => $request->to ?? null
+            'to' => $request->to ?? null,
+            'list_tapel' => array_reverse(getAcademicYearsList()),
+            'selected_tapel' => $request->tahun_pelajaran
         ]);
     }
 
     public function kerohanian()
     {
-        $kerohanian = Kerohanian::all();
+        $kerohanian = Kerohanian::where('tahun_pelajaran', getAcademicYear(now()))->get();
         $kerohanian = $kerohanian->groupBy('siswa_id');
         $kelas = Kelas::orderBy('nama_kelas')->get();
         return view('tim_literasi.kerohanian.list', [
             'rohani' => $kerohanian,
             'kelas' => $kelas,
+            'list_tapel' => array_reverse(getAcademicYearsList()),
+            'selected_tapel' => getAcademicYear(now()),
             'kelas_id' => null
         ]);
     }
@@ -191,13 +221,19 @@ class GeneralTimLiterasiController extends Controller
             $kerohanian = $kerohanian->whereBetween('tanggal', [$request->from, $request->to]);
         }
 
+        if ($request->tahun_pelajaran != 'all') {
+            $kerohanian = $kerohanian->where('tahun_pelajaran', $request->tahun_pelajaran);
+        }
+
         $kerohanian = $kerohanian->groupBy('siswa_id');
         return view('tim_literasi.kerohanian.list', [
             'rohani' => $kerohanian,
             'kelas' => $kelas,
             'from' => $request->from ?? null,
             'to' => $request->to ?? null,
-            'kelas_id' => $request->kelas_id
+            'kelas_id' => $request->kelas_id,
+            'list_tapel' => array_reverse(getAcademicYearsList()),
+            'selected_tapel' => $request->tahun_pelajaran
         ]);
     }
 
@@ -208,7 +244,7 @@ class GeneralTimLiterasiController extends Controller
         $memenuhi = 0;
         $tidak_memenuhi = 0;
 
-        $kerohanian = Kerohanian::all();
+        $kerohanian = Kerohanian::where('tahun_pelajaran', getAcademicYear(now()))->get();
         $kerohanian = $kerohanian->groupBy('siswa_id');
 
         $kelas = Kelas::orderBy('nama_kelas')->get();
@@ -229,7 +265,9 @@ class GeneralTimLiterasiController extends Controller
             'tidak_memenuhi' => $tidak_memenuhi,
             'jml_input' => $jml_input,
             'kelas' => $kelas,
-            'kelas_id' => null
+            'kelas_id' => null,
+            'list_tapel' => array_reverse(getAcademicYearsList()),
+            'selected_tapel' => getAcademicYear(now())
         ]);
     }
 
@@ -255,6 +293,10 @@ class GeneralTimLiterasiController extends Controller
 
         if ($request->from && $request->to) {
             $kerohanian = $kerohanian->whereBetween('tanggal', [$request->from, $request->to]);
+        }
+
+        if ($request->tahun_pelajaran != 'all') {
+            $kerohanian = $kerohanian->where('tahun_pelajaran', $request->tahun_pelajaran);
         }
 
         $kerohanian = $kerohanian->groupBy('siswa_id');
@@ -297,19 +339,23 @@ class GeneralTimLiterasiController extends Controller
             'kelas' => $kelas,
             'kelas_id' => $request->kelas_id,
             'from' => $request->from ?? null,
-            'to' => $request->to ?? null
+            'to' => $request->to ?? null,
+            'list_tapel' => array_reverse(getAcademicYearsList()),
+            'selected_tapel' => $request->tahun_pelajaran
         ]);
     }
 
     public function kunjungan()
     {
-        $kunjungan = Kunjungan::all();
+        $kunjungan = Kunjungan::where('tahun_pelajaran', getAcademicYear(now()))->get();
         $kunjungan = $kunjungan->groupBy('siswa_id');
         $kelas = Kelas::orderBy('nama_kelas')->get();
         return view('tim_literasi.kunjungan.list', [
             'kunjungan' => $kunjungan,
             'kelas' => $kelas,
-            'kelas_id' => null
+            'kelas_id' => null,
+            'list_tapel' => array_reverse(getAcademicYearsList()),
+            'selected_tapel' => getAcademicYear(now())
         ]);
     }
 
@@ -328,13 +374,18 @@ class GeneralTimLiterasiController extends Controller
         if ($request->from && $request->to) {
             $kunjungan = $kunjungan->whereBetween('tanggal', [$request->from, $request->to]);
         }
+        if ($request->tahun_pelajaran != 'all') {
+           $kunjungan =$kunjungan->where('tahun_pelajaran', $request->tahun_pelajaran);
+        }
         $kunjungan = $kunjungan->groupBy('siswa_id');
         return view('tim_literasi.kunjungan.list', [
             'kelas' => $kelas,
             'kunjungan' => $kunjungan,
             'kelas_id' => $request->kelas_id,
             'from' => $request->from ?? null,
-            'to' => $request->to ?? null
+            'to' => $request->to ?? null,
+            'selected_tapel' => $request->tahun_pelajaran,
+            'list_tapel' => array_reverse(getAcademicYearsList())
         ]);
     }
 
@@ -345,7 +396,7 @@ class GeneralTimLiterasiController extends Controller
         $memenuhi = 0;
         $tidak_memenuhi = 0;
 
-        $kunjungan = Kunjungan::all();
+        $kunjungan = Kunjungan::where('tahun_pelajaran', getAcademicYear(now()))->get();
         $kunjungan = $kunjungan->groupBy('siswa_id');
 
         $kelas = Kelas::orderBy('nama_kelas')->get();
@@ -366,7 +417,9 @@ class GeneralTimLiterasiController extends Controller
             'tidak_memenuhi' => $tidak_memenuhi,
             'jml_input' => $jml_input,
             'kelas' => $kelas,
-            'kelas_id' => null
+            'kelas_id' => null,
+            'list_tapel' => array_reverse(getAcademicYearsList()),
+            'selected_tapel' => getAcademicYear(now())
         ]);
     }
 
@@ -391,6 +444,9 @@ class GeneralTimLiterasiController extends Controller
         if ($request->from && $request->to) {
             $kunjungan = $kunjungan->whereBetween('tanggal', [$request->from, $request->to]);
         }
+        if ($request->tahun_pelajaran != 'all') {
+            $kunjungan =$kunjungan->where('tahun_pelajaran', $request->tahun_pelajaran);
+         }
         $kunjungan = $kunjungan->groupBy('siswa_id');
 
 
@@ -434,7 +490,9 @@ class GeneralTimLiterasiController extends Controller
             'kelas' => $kelas,
             'kelas_id' => $request->kelas_id,
             'from' => $request->from ?? null,
-            'to' => $request->to ?? null
+            'to' => $request->to ?? null,
+            'selected_tapel' => $request->tahun_pelajaran,
+            'list_tapel' => array_reverse(getAcademicYearsList())
         ]);
     }
 
@@ -455,13 +513,13 @@ class GeneralTimLiterasiController extends Controller
         $warga_kelas = $warga_kelas->pluck('siswa_id');
         $kelas = Kelas::orderBy('nama_kelas')->get();
 
-        if($request->kelas_id != 'all'){
+        if ($request->kelas_id != 'all') {
             $ukbi = UKBI::whereIn('siswa_id', $warga_kelas)->get();
-        }else{
+        } else {
             $ukbi = UKBI::all();
         }
 
-        if($request->from && $request->to){
+        if ($request->from && $request->to) {
             $ukbi = $ukbi->whereBetween('tanggal_tes', [$request->from, $request->to]);
         }
 
@@ -512,16 +570,16 @@ class GeneralTimLiterasiController extends Controller
         $memenuhi = 0;
         $tidak_memenuhi = 0;
 
-        if($request->kelas_id != 'all'){
+        if ($request->kelas_id != 'all') {
             $ukbi = UKBI::whereIn('siswa_id', $warga_kelas);
             $jumlah_siswa = Siswa::whereIn('id', $warga_kelas)->count();
-        }else{
+        } else {
             $ukbi = UKBI::all();
             $jumlah_siswa = Siswa::all()->count();
         }
 
-        if($request->from && $request->id){
-            $ukbi = $ukbi->whereBetween('tanggal_tes', [$request->from,$request->to]);
+        if ($request->from && $request->id) {
+            $ukbi = $ukbi->whereBetween('tanggal_tes', [$request->from, $request->to]);
         }
 
         $kelas = Kelas::orderBy('nama_kelas')->get();
@@ -583,13 +641,13 @@ class GeneralTimLiterasiController extends Controller
         $warga_kelas = $warga_kelas->pluck('siswa_id');
         $kelas = Kelas::orderBy('nama_kelas')->get();
 
-        if($request->kelas_id != 'all'){
+        if ($request->kelas_id != 'all') {
             $kegiatan = KegiatanSiswa::whereIn('siswa_id', $warga_kelas)->get();
-        }else{
+        } else {
             $kegiatan = KegiatanSiswa::all();
         }
 
-        if($request->from && $request->to){
+        if ($request->from && $request->to) {
             $kegiatan = $kegiatan->whereBetween('tanggal', [$request->from, $request->to]);
         }
 
@@ -667,7 +725,7 @@ class GeneralTimLiterasiController extends Controller
             $karya = UnggahKarya::all();
         }
 
-        if($request->from && $request->to){
+        if ($request->from && $request->to) {
             $karya = $karya->whereBetween('created_at', [$request->from, $request->to]);
         }
 

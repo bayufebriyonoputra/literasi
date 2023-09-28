@@ -32,6 +32,19 @@
                     <label for="">Sampai</label>
                     <input type="date" class="form-control" name="to" value="{{ isset($to) ? $to : null }}">
                 </div>
+                <div class="row mb-3">
+                    <p>Tahun Pelajaran</p>
+                    <div class="col-md-4">
+                        <select name="tahun_pelajaran" id="tahun_pelajaran" class="form-select">
+                            <option value="all" selected>Semua</option>
+                            @foreach ($list_tapel as $tapel)
+                                <option value="{{ $tapel }}" {{ $tapel == $selected_tapel ? 'selected' : '' }}>
+                                    {{ $tapel }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                </div>
                 <div class="col-md-2 mt-4">
                     <button type="submit" class="btn btn-primary">Terapkan</button>
                 </div>

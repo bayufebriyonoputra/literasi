@@ -21,10 +21,13 @@ class EkstensifWalasController extends Controller
 {
     public function ekstensif()
     {
+
         $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
         $warga_kelas = $warga_kelas->pluck('siswa_id');
 
-        $ekstensif = Ekstensif::whereIn('siswa_id', $warga_kelas)->orderBy('siswa_id', 'ASC')
+        $ekstensif = Ekstensif::whereIn('siswa_id', $warga_kelas)
+        ->where('tahun_pelajaran', getAcademicYear(now()))
+        ->orderBy('siswa_id', 'ASC')
             ->get();
 
         $ekstensif = $ekstensif->groupBy('siswa_id');
@@ -35,7 +38,7 @@ class EkstensifWalasController extends Controller
         return view('walas.ekstensif.list', [
             'ekstensif' => $ekstensif,
             'list_tapel' => array_reverse(getAcademicYearsList()),
-            'selected_tapel' => null
+            'selected_tapel' => getAcademicYear(now())
         ]);
     }
 
@@ -85,6 +88,7 @@ class EkstensifWalasController extends Controller
         $warga_kelas = $warga_kelas->pluck('siswa_id');
 
         $ekstensif = Ekstensif::whereIn('siswa_id', $warga_kelas)
+        ->where('tahun_pelajaran', getAcademicYear(now()))
             ->get();
 
         $ekstensif = $ekstensif->groupBy('siswa_id');
@@ -110,7 +114,7 @@ class EkstensifWalasController extends Controller
             'tidak_memenuhi' => $tidak_memenuhi,
             'jml_input' => $jml_input,
             'list_tapel' => array_reverse(getAcademicYearsList()),
-            'selected_tapel' => null
+            'selected_tapel' => getAcademicYear(now())
         ]);
     }
 
@@ -174,14 +178,16 @@ class EkstensifWalasController extends Controller
         $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
         $warga_kelas = $warga_kelas->pluck('siswa_id');
 
-        $kerohanian = Kerohanian::whereIn('siswa_id', $warga_kelas)->orderBy('siswa_id', 'ASC')->get();
+        $kerohanian = Kerohanian::whereIn('siswa_id', $warga_kelas)
+            ->where('tahun_pelajaran', getAcademicYear(now()))
+        ->orderBy('siswa_id', 'ASC')->get();
         $kerohanian = $kerohanian->groupBy('siswa_id');
         // return $kerohanian;
 
         return view('walas.kerohanian.list', [
             'rohani' => $kerohanian,
             'list_tapel' => array_reverse(getAcademicYearsList()),
-            'selected_tapel' => null
+            'selected_tapel' => getAcademicYear(now())
         ]);
     }
     public function filterKerohanian(Request $request)
@@ -228,7 +234,9 @@ class EkstensifWalasController extends Controller
         $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
         $warga_kelas = $warga_kelas->pluck('siswa_id');
 
-        $kerohanian = Kerohanian::whereIn('siswa_id', $warga_kelas)->get();
+        $kerohanian = Kerohanian::whereIn('siswa_id', $warga_kelas)
+        ->where('tahun_pelajaran', getAcademicYear(now()))
+        ->get();
         $kerohanian = $kerohanian->groupBy('siswa_id');
         $jumlah_siswa = $warga_kelas->count();
         $jml_input = $kerohanian->count();
@@ -246,7 +254,7 @@ class EkstensifWalasController extends Controller
             'tidak_memenuhi' => $tidak_memenuhi,
             'jml_input' => $jml_input,
             'list_tapel' => array_reverse(getAcademicYearsList()),
-            'selected_tapel' => null
+            'selected_tapel' => getAcademicYear(now())
         ]);
     }
 
@@ -302,13 +310,14 @@ class EkstensifWalasController extends Controller
     {
         $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
         $warga_kelas = $warga_kelas->pluck('siswa_id');
-        $kunjungan = Kunjungan::whereIn('siswa_id', $warga_kelas)->orderBy('siswa_id', 'ASC')->get();
+        $kunjungan = Kunjungan::whereIn('siswa_id', $warga_kelas)
+        ->where('tahun_pelajaran', getAcademicYear(now()))
+        ->orderBy('siswa_id', 'ASC')->get();
         $kunjungan = $kunjungan->groupBy('siswa_id');
-
         return view('walas.kunjungan.list', [
             'kunjungan' => $kunjungan,
             'list_tapel' => array_reverse(getAcademicYearsList()),
-            'selected_tapel' => null
+            'selected_tapel' => getAcademicYear(now())
         ]);
     }
 
@@ -355,7 +364,9 @@ class EkstensifWalasController extends Controller
 
         $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
         $warga_kelas = $warga_kelas->pluck('siswa_id');
-        $kunjungan = Kunjungan::whereIn('siswa_id', $warga_kelas)->get();
+        $kunjungan = Kunjungan::whereIn('siswa_id', $warga_kelas)
+        ->where('tahun_pelajaran', getAcademicYear(now()))
+        ->get();
         $kunjungan = $kunjungan->groupBy('siswa_id');
 
         $jumlah_siswa = $warga_kelas->count();
@@ -374,7 +385,7 @@ class EkstensifWalasController extends Controller
             'tidak_memenuhi' => $tidak_memenuhi,
             'jml_input' => $jml_input,
             'list_tapel' => array_reverse(getAcademicYearsList()),
-            'selected_tapel' => null
+            'selected_tapel' => getAcademicYear(now())
         ]);
     }
 
