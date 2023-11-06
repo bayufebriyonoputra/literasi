@@ -22,7 +22,9 @@ class EkstensifWalasController extends Controller
     public function ekstensif()
     {
 
-        $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
+        $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)
+        ->where('tahun_pelajaran', getAcademicYear(now()))
+        ->get();
         $warga_kelas = $warga_kelas->pluck('siswa_id');
 
         $ekstensif = Ekstensif::whereIn('siswa_id', $warga_kelas)
@@ -175,7 +177,9 @@ class EkstensifWalasController extends Controller
 
     public function kerohanian()
     {
-        $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
+        $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)
+        ->where('tahun_pelajaran', getAcademicYear(now()))
+        ->get();
         $warga_kelas = $warga_kelas->pluck('siswa_id');
 
         $kerohanian = Kerohanian::whereIn('siswa_id', $warga_kelas)
@@ -308,7 +312,9 @@ class EkstensifWalasController extends Controller
 
     public function kunjungan()
     {
-        $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
+        $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)
+        ->where('tahun_pelajaran', getAcademicYear(now()))
+        ->get();
         $warga_kelas = $warga_kelas->pluck('siswa_id');
         $kunjungan = Kunjungan::whereIn('siswa_id', $warga_kelas)
         ->where('tahun_pelajaran', getAcademicYear(now()))
@@ -448,7 +454,9 @@ class EkstensifWalasController extends Controller
 
     public function ukbi()
     {
-        $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
+        $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)
+        ->where('tahun_pelajaran', getAcademicYear(now()))
+        ->get();
         $warga_kelas = $warga_kelas->pluck('siswa_id');
         $ukbi = UKBI::whereIn('siswa_id', $warga_kelas)->orderBy('siswa_id', 'ASC')->get();
 
@@ -488,7 +496,9 @@ class EkstensifWalasController extends Controller
 
     public function karya()
     {
-        $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
+        $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)
+        ->where('tahun_pelajaran', getAcademicYear(now()))
+        ->get();
         $warga_kelas = $warga_kelas->pluck('siswa_id');
         $karya = UnggahKarya::whereIn('siswa_id', $warga_kelas)->orderBy('siswa_id', 'ASC')->get();
         $karya = $karya->groupBy('siswa_id');
@@ -509,7 +519,9 @@ class EkstensifWalasController extends Controller
 
     public function kegiatan()
     {
-        $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)->get();
+        $warga_kelas = WargaKelas::where('wali_kelas_id', auth()->guard('guru')->user()->id)
+        ->where('tahun_pelajaran', getAcademicYear(now()))
+        ->get();
         $warga_kelas = $warga_kelas->pluck('siswa_id');
         $kegiatan = KegiatanSiswa::whereIn('siswa_id', $warga_kelas)->orderBy('siswa_id', 'ASC')->get();
         $kegiatan = $kegiatan->groupBy('siswa_id');
