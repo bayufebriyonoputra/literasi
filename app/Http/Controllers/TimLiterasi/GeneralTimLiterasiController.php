@@ -207,7 +207,13 @@ class GeneralTimLiterasiController extends Controller
 
     public function filterKerohanian(Request $request)
     {
+
         $warga_kelas = WargaKelas::where('kelas_id', $request->kelas_id);
+
+        if ($request->tahun_pelajaran != 'all') {
+            $warga_kelas = $warga_kelas->where('tahun_pelajaran', $request->tahun_pelajaran);
+        }
+
         $warga_kelas = $warga_kelas->pluck('siswa_id');
         $kelas = Kelas::orderBy('nama_kelas')->get();
 
@@ -274,6 +280,10 @@ class GeneralTimLiterasiController extends Controller
     public function filterKetercapaianKerohanian(Request $request)
     {
         $warga_kelas = WargaKelas::where('kelas_id', $request->kelas_id);
+
+        if ($request->tahun_pelajaran != 'all') {
+            $warga_kelas = $warga_kelas->where('tahun_pelajaran', $request->tahun_pelajaran);
+        }
         $warga_kelas = $warga_kelas->pluck('siswa_id');
 
         $jumlah_siswa = 0;
@@ -362,6 +372,9 @@ class GeneralTimLiterasiController extends Controller
     public function filterKunjungan(Request $request)
     {
         $warga_kelas = WargaKelas::where('kelas_id', $request->kelas_id);
+        if ($request->tahun_pelajaran != 'all') {
+            $warga_kelas = $warga_kelas->where('tahun_pelajaran', $request->tahun_pelajaran);
+        }
         $warga_kelas = $warga_kelas->pluck('siswa_id');
         $kelas = Kelas::orderBy('nama_kelas')->get();
 
@@ -426,6 +439,9 @@ class GeneralTimLiterasiController extends Controller
     public function filterKetercapaianKunjungan(Request $request)
     {
         $warga_kelas = WargaKelas::where('kelas_id', $request->kelas_id);
+        if ($request->tahun_pelajaran != 'all') {
+            $warga_kelas = $warga_kelas->where('tahun_pelajaran', $request->tahun_pelajaran);
+        }
         $warga_kelas = $warga_kelas->pluck('siswa_id');
 
         $jumlah_siswa = 0;

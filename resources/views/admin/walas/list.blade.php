@@ -115,7 +115,7 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $w->kelas->nama_kelas }}</td>
-                        <td>{{ $w->guru->nama }}</td>
+                        <td>{{ $w->guru->nama ?? '-' }}</td>
                         <td>{{ $w->tahun_pelajaran }}</td>
                         <td>
                             <form action="/admin-walas/{{ $w->id }}" class="d-inline" method="POST">
