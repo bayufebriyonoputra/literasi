@@ -102,8 +102,8 @@ class GeneralTimLiterasiController extends Controller
         $tidak_memenuhi = $jumlah_siswa - $memenuhi;
         return view('tim_literasi.ekstensif.ketercapaian', [
             'jumlah_siswa' => 768,
-            'memenuhi' => 377,
-            'tidak_memenuhi' => 391,
+            'memenuhi' => 538,
+            'tidak_memenuhi' => 230,
             'jml_input' => 538,
             'kelas' => $kelas,
             'kelas_id' => null,
@@ -185,13 +185,13 @@ class GeneralTimLiterasiController extends Controller
 
         if($request->tahun_pelajaran == '2022/2023'){
             $jumlah_siswa = 768;
-            $memenuhi = 377;
+            $memenuhi = 538;
             $tidak_memenuhi = 391;
             $jml_input = 538;
 
         }else{
             $jumlah_siswa = 768;
-            $memenuhi = 480;
+            $memenuhi = 607;
             $tidak_memenuhi = 288;
             $jml_input = 607;
         }
@@ -286,7 +286,7 @@ class GeneralTimLiterasiController extends Controller
         $tidak_memenuhi = $jumlah_siswa - $memenuhi;
         return view('tim_literasi.kerohanian.ketercapaian', [
             'jumlah_siswa' => 768,
-            'memenuhi' => 444,
+            'memenuhi' => 580,
             'tidak_memenuhi' => 324,
             'jml_input' => 584,
             'kelas' => $kelas,
@@ -366,13 +366,13 @@ class GeneralTimLiterasiController extends Controller
 
         if($request->tahun_pelajaran == '2022/2023'){
             $jumlah_siswa = 768;
-            $memenuhi = 444;
+            $memenuhi = 580;
             $tidak_memenuhi = 324;
             $jml_input = 584;
 
         }else{
             $jumlah_siswa = 768;
-            $memenuhi = 517;
+            $memenuhi = 628;
             $tidak_memenuhi = 251;
             $jml_input = 630;
         }
@@ -461,7 +461,7 @@ class GeneralTimLiterasiController extends Controller
         $tidak_memenuhi = $jumlah_siswa - $memenuhi;
         return view('tim_literasi.kunjungan.ketercapaian', [
             'jumlah_siswa' => 768,
-            'memenuhi' => 432,
+            'memenuhi' => 555,
             'tidak_memenuhi' => 336,
             'jml_input' => 576,
             'kelas' => $kelas,
@@ -539,13 +539,13 @@ class GeneralTimLiterasiController extends Controller
 
         if($request->tahun_pelajaran == '2022/2023'){
             $jumlah_siswa = 768;
-            $memenuhi = 432;
+            $memenuhi = 555;
             $tidak_memenuhi = 336;
             $jml_input = 576;
 
         }else{
             $jumlah_siswa = 768;
-            $memenuhi = 504;
+            $memenuhi = 620;
             $tidak_memenuhi = 264;
             $jml_input = 622;
         }
@@ -618,10 +618,10 @@ class GeneralTimLiterasiController extends Controller
 
         $tidak_memenuhi = $jumlah_siswa - $memenuhi;
         return view('tim_literasi.ukbi.ketercapaian', [
-            'jumlah_siswa' => 1536,
-            'memenuhi' => 912,
-            'tidak_memenuhi' => 624,
-            'jml_input' => 1183,
+            'jumlah_siswa' => 768,
+            'memenuhi' => 569,
+            'tidak_memenuhi' => 199,
+            'jml_input' => 574,
             'kelas_id' => null,
             'kelas' => $kelas
         ]);
