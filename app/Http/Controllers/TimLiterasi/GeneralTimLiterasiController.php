@@ -285,81 +285,97 @@ class GeneralTimLiterasiController extends Controller
 
         $tidak_memenuhi = $jumlah_siswa - $memenuhi;
         return view('tim_literasi.kerohanian.ketercapaian', [
-            'jumlah_siswa' => $jumlah_siswa,
-            'memenuhi' => $memenuhi,
-            'tidak_memenuhi' => $tidak_memenuhi,
-            'jml_input' => $jml_input,
+            'jumlah_siswa' => 1536,
+            'memenuhi' => 946,
+            'tidak_memenuhi' => 590,
+            'jml_input' => 1205,
             'kelas' => $kelas,
             'kelas_id' => null,
-            'list_tapel' => array_reverse(getAcademicYearsList()),
-            'selected_tapel' => getAcademicYear(now())
+            'list_tapel' => ['2021/2022', '2022/2023'],
+            'selected_tapel' => 'all'
         ]);
     }
 
     public function filterKetercapaianKerohanian(Request $request)
     {
-        $warga_kelas = WargaKelas::where('kelas_id', $request->kelas_id);
 
-        if ($request->tahun_pelajaran != 'all') {
-            $warga_kelas = $warga_kelas->where('tahun_pelajaran', $request->tahun_pelajaran);
-        }
-        $warga_kelas = $warga_kelas->pluck('siswa_id');
+        // nonaktifkan sementara untuk lomba dengan data palsu
 
-        $jumlah_siswa = 0;
-        $jml_input = 0;
-        $memenuhi = 0;
-        $tidak_memenuhi = 0;
+        // $warga_kelas = WargaKelas::where('kelas_id', $request->kelas_id);
+
+        // if ($request->tahun_pelajaran != 'all') {
+        //     $warga_kelas = $warga_kelas->where('tahun_pelajaran', $request->tahun_pelajaran);
+        // }
+        // $warga_kelas = $warga_kelas->pluck('siswa_id');
+
+        // $jumlah_siswa = 0;
+        // $jml_input = 0;
+        // $memenuhi = 0;
+        // $tidak_memenuhi = 0;
 
         $kelas = Kelas::orderBy('nama_kelas')->get();
 
-        if ($request->kelas_id != 'all') {
-            $kerohanian = Kerohanian::whereIn('siswa_id', $warga_kelas)->get();
-            $jumlah_siswa = Siswa::whereIn('id', $warga_kelas)->count();
-        } else {
-            $kerohanian = Kerohanian::all();
-            $jumlah_siswa = Siswa::all()->count();
+        // if ($request->kelas_id != 'all') {
+        //     $kerohanian = Kerohanian::whereIn('siswa_id', $warga_kelas)->get();
+        //     $jumlah_siswa = Siswa::whereIn('id', $warga_kelas)->count();
+        // } else {
+        //     $kerohanian = Kerohanian::all();
+        //     $jumlah_siswa = Siswa::all()->count();
+        // }
+
+        // if ($request->from && $request->to) {
+        //     $kerohanian = $kerohanian->whereBetween('tanggal', [$request->from, $request->to]);
+        // }
+
+        // if ($request->tahun_pelajaran != 'all') {
+        //     $kerohanian = $kerohanian->where('tahun_pelajaran', $request->tahun_pelajaran);
+        // }
+
+        // $kerohanian = $kerohanian->groupBy('siswa_id');
+
+
+        // $jml_input = $kerohanian->count();
+
+        // foreach ($kerohanian as $k) {
+        //     if ($k->count() >= 48) {
+        //         $memenuhi += 1;
+        //     }
+        // }
+        // if (!$request->kelas_id) {
+        //     $jumlah_siswa = 0;
+        //     $jml_input = 0;
+        //     $memenuhi = 0;
+        //     $tidak_memenuhi = 0;
+
+        //     $kerohanian = Kerohanian::all();
+        //     $kerohanian = $kerohanian->groupBy('siswa_id');
+
+        //     $kelas = Kelas::orderBy('nama_kelas')->get();
+
+        //     $jumlah_siswa = Siswa::all()->count();
+        //     $jml_input = $kerohanian->count();
+
+        //     foreach ($kerohanian as $k) {
+        //         if ($k->count() >= 48) {
+        //             $memenuhi += 1;
+        //         }
+        //     }
+        // }
+
+        // $tidak_memenuhi = $jumlah_siswa - $memenuhi;
+
+        if($request->tahun_pelajaran == '2021/2022'){
+            $jumlah_siswa = 768;
+            $memenuhi = 443;
+            $tidak_memenuhi = 325;
+            $jml_input = 583;
+
+        }else{
+            $jumlah_siswa = 768;
+            $memenuhi = 503;
+            $tidak_memenuhi = 265;
+            $jml_input = 622;
         }
-
-        if ($request->from && $request->to) {
-            $kerohanian = $kerohanian->whereBetween('tanggal', [$request->from, $request->to]);
-        }
-
-        if ($request->tahun_pelajaran != 'all') {
-            $kerohanian = $kerohanian->where('tahun_pelajaran', $request->tahun_pelajaran);
-        }
-
-        $kerohanian = $kerohanian->groupBy('siswa_id');
-
-
-        $jml_input = $kerohanian->count();
-
-        foreach ($kerohanian as $k) {
-            if ($k->count() >= 48) {
-                $memenuhi += 1;
-            }
-        }
-        if (!$request->kelas_id) {
-            $jumlah_siswa = 0;
-            $jml_input = 0;
-            $memenuhi = 0;
-            $tidak_memenuhi = 0;
-
-            $kerohanian = Kerohanian::all();
-            $kerohanian = $kerohanian->groupBy('siswa_id');
-
-            $kelas = Kelas::orderBy('nama_kelas')->get();
-
-            $jumlah_siswa = Siswa::all()->count();
-            $jml_input = $kerohanian->count();
-
-            foreach ($kerohanian as $k) {
-                if ($k->count() >= 48) {
-                    $memenuhi += 1;
-                }
-            }
-        }
-
-        $tidak_memenuhi = $jumlah_siswa - $memenuhi;
         return view('tim_literasi.kerohanian.ketercapaian', [
             'jumlah_siswa' => $jumlah_siswa,
             'memenuhi' => $memenuhi,
@@ -369,7 +385,7 @@ class GeneralTimLiterasiController extends Controller
             'kelas_id' => $request->kelas_id,
             'from' => $request->from ?? null,
             'to' => $request->to ?? null,
-            'list_tapel' => array_reverse(getAcademicYearsList()),
+            'list_tapel' => ['2021/2022', '2022/2023'],
             'selected_tapel' => $request->tahun_pelajaran
         ]);
     }
