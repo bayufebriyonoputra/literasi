@@ -102,7 +102,7 @@ class GeneralTimLiterasiController extends Controller
         $tidak_memenuhi = $jumlah_siswa - $memenuhi;
         return view('tim_literasi.ekstensif.ketercapaian', [
             'jumlah_siswa' => 768,
-            'memenuhi' => 538,
+            'memenuhi' => 534,
             'tidak_memenuhi' => 230,
             'jml_input' => 538,
             'kelas' => $kelas,
@@ -185,7 +185,7 @@ class GeneralTimLiterasiController extends Controller
 
         if($request->tahun_pelajaran == '2022/2023'){
             $jumlah_siswa = 768;
-            $memenuhi = 538;
+            $memenuhi = 534;
             $tidak_memenuhi = 391;
             $jml_input = 538;
 
