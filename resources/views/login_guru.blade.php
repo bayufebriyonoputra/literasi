@@ -61,6 +61,17 @@
                         <span class="focus-input100" data-placeholder="Password"></span>
                     </div>
 
+                    <div class="">
+                        <label for="Role" class="form-label">Pilih Role</label>
+                        <select name="role" class="form-control" id="Role">
+                            <option value="">Default</option>
+                            <option value="admin">Admin</option>
+                            <option value="walas">Walas</option>
+                            <option value="inovasi">Inovasi/Literasi</option>
+                            <option value="perpustakaan">Perpustakaan</option>
+                        </select>
+                    </div>
+
                     <div class="container-login100-form-btn">
                         <div class="wrap-login100-form-btn">
                             <div class="login100-form-bgbtn"></div>
@@ -69,6 +80,8 @@
                             </button>
                         </div>
                     </div>
+
+
 
 
                     <div class="text-center ">
