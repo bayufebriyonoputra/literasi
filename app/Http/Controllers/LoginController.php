@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Spatie\FlareClient\Truncation\TrimContextItemsStrategy;
 
 class LoginController extends Controller
 {
@@ -51,6 +52,8 @@ class LoginController extends Controller
             'nip' => ['required'],
             'password' => ['required'],
         ]);
+
+        $credentials['nip'] = trim($request->input('nip'));
 
         if (Auth::guard('guru')->attempt($credentials)) {
             $request->session()->regenerate();
