@@ -47,16 +47,32 @@ class LoginController extends Controller
         // Fungsi logout siswa jika sebelumnya siswa login
         Auth::guard('siswa')->logout();
 
-
         $credentials = $request->validate([
             'nip' => ['required'],
             'password' => ['required'],
         ]);
+        $credentials['nip'] = str_replace(" ", "", $request->input('nip'));
 
-        $credentials['nip'] = trim($request->input('nip'));
+        $role = $request->input('role');
+
 
         if (Auth::guard('guru')->attempt($credentials)) {
             $request->session()->regenerate();
+
+
+            if($role){
+                if(Auth::guard('guru')->user()->admin && $role == 'admin'){
+                    return redirect()->intended('/admin-dashboard');
+                }else if(Auth::guard('guru')->user()->walas && $role == 'walas'){
+                    return redirect()->intended('/walas-ekstensif');
+                }else if(Auth::guard('guru')->user()->inovasi && $role == 'inovasi'){
+                    return redirect()->intended('/tugas-literasi');
+                }elseif(Auth::guard('guru')->user()->perpustakaan && $role == "perpustakaan"){
+                    return redirect()->intended('/tim-perpustakaan');
+                }
+            }
+
+
             if (Auth::guard('guru')->user()->admin) {
                 return redirect()->intended('/admin-dashboard');
             } else if (Auth::guard('guru')->user()->walas) {

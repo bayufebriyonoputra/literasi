@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\DataKerohanian;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\Admin\GuruController;
