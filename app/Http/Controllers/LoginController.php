@@ -58,14 +58,19 @@ class LoginController extends Controller
         if (Auth::guard('guru')->attempt($credentials)) {
             $request->session()->regenerate();
 
+
             if($role){
-                if(Auth::guard('guru')->user()->admin && $role == 'admin'){
+                if($role == 'admin'){
+                    if(!Auth::guard('guru')->user()->admin) return abort(403, 'anda tidak memiliki hak akses');
                     return redirect()->intended('/admin-dashboard');
-                }else if(Auth::guard('guru')->user()->walas && $role == 'walas'){
+                }elseif($role == 'walas'){
+                    if(!Auth::guard('guru')->user()->walas) return abort(403, 'anda tidak memiliki hak akses');
                     return redirect()->intended('/walas-ekstensif');
-                }else if(Auth::guard('guru')->user()->inovasi && $role == 'inovasi'){
+                }elseif($role == 'inovasi'){
+                    if(!Auth::guard('guru')->user()->inovasi) return abort(403, 'anda tidak memiliki hak akses');
                     return redirect()->intended('/tugas-literasi');
-                }elseif(Auth::guard('guru')->user()->perpustakaan && $role == "perpustakaan"){
+                }elseif($role == 'perpustakaan'){
+                    if(!Auth::guard('guru')->user()->perpustakaan) return abort(403, 'anda tidak memiliki hak akses');
                     return redirect()->intended('/tim-perpustakaan');
                 }
             }
