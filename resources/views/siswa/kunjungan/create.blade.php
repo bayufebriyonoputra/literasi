@@ -113,8 +113,11 @@
                             <div class="row mb-3">
                                 <label class="col-sm-2 col-form-label" for="basic-default-phone">Upload Foto</label>
                                 <div class="col-sm-10">
-                                    <input type="file" class="form-control" name="file_foto" required>
+                                    <input type="file" class="form-control @error('file_foto')is-invalid @enderror" name="file_foto" required>
                                     <p class="text-muted">file yang diupload adalah foto(*jpg,*jpeg,*png)</p>
+                                    @error('file_foto')
+                                    <p class="text-danger">{{$message}}</p>
+                                    @enderror
                                 </div>
                             </div>
 
