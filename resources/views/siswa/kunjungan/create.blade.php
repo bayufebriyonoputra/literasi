@@ -95,6 +95,7 @@
                                 <div class="col-sm-10">
                                     <textarea name="keterangan" id="" rows="3" class="form-control @error('keterangan')is-invalid @enderror"
                                         required>{{ old('keterangan') }}</textarea>
+                                        <p class="text-muted">Keterangan harus diisi minimal 50 kata</p>
                                     @error('keterangan')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
@@ -105,6 +106,7 @@
                                 <div class="col-sm-10">
                                     <textarea name="hasil_kunjungan" id="" rows="3"
                                         class="form-control @error('hasil_kunjungan')is-invalid @enderror" required>{{ old('hasil_kunjungan') }}</textarea>
+                                        <p class="text-muted">Hasil Kunjungan harus diisi minimal 200 kata</p>
                                     @error('hasil_kunjungan')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
