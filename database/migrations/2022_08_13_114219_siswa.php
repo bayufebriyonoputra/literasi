@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('hp_wali', 14);
             $table->text('tes_diagnostik');
             $table->string('tahun_pelajaran', 10);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

@@ -23,7 +23,7 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $w->kelas->nama_kelas }}</td>
-                        <td>{{ $w->guru->nama }}</td>
+                        <td>{{ $w->guru->nama ?? '-' }}</td>
                         <td>{{ $w->tahun_pelajaran }}</td>
                         <td>
                             <a class="btn btn-warning" href="/admin-warga/{{ $w->id }}"><i
