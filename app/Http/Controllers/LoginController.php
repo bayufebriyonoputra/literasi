@@ -32,6 +32,7 @@ class LoginController extends Controller
             'nomor_induk' => ['required'],
             'password' => ['required'],
         ]);
+        $credentials['is_active'] = true;
 
         if (Auth::guard('siswa')->attempt($credentials)) {
             $request->session()->regenerate();

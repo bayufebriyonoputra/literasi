@@ -53,12 +53,14 @@ class KunjunganController extends Controller
             'keterangan' => ['required', new wordCount(50)],
             'hasil_kunjungan' =>  ['required', new wordCount(200)],
             'nama_tempat' => 'required|min:5',
-            'tempat_id' => 'required'
+            'tempat_id' => 'required',
+            'file_foto' => 'required|image|mimes:jpeg,png,jpg|max:1048'
         ]);
 
         $validetData['siswa_id'] = auth()->guard('siswa')->user()->id;
-        $validatedData['tahun_pelajaran'] = getAcademicYear(now());
+        $validetData['tahun_pelajaran'] = getAcademicYear(now());
         $validetData['file_foto'] = Storage::disk('public_uploads')->put('foto kunjungan', $request->file('file_foto'));
+
         Kunjungan::create($validetData);
         return back()->with('success', 'Data telah ditambahkan');
     }
