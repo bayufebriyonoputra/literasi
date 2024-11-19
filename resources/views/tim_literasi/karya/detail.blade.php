@@ -88,7 +88,7 @@
                     @foreach ($karya as $k)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td>{{ Carbon\Carbon::parse($k->created_at)->locale('id_ID')->isoFormat('DD MMMM YYYY') }}</td>
+                            <td>{{ $k->tanggal ? Carbon\Carbon::parse($k->tanggal)->locale('id_ID')->isoFormat('DD MMMM YYYY') : Carbon\Carbon::parse($k->created_at)->locale('id_ID')->isoFormat('DD MMMM YYYY') }}</td>
                             <td>{{ $k->karya->karya }} </td>
                             <td>{{ $k->status_kurasi }} </td>
                             <td>{{ $k->review ? $k->review : '-' }}</td>
