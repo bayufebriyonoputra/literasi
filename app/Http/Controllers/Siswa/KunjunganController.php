@@ -50,8 +50,8 @@ class KunjunganController extends Controller
         $validetData = $request->validate([
             'tanggal' => 'required',
             'profil_pelajar_pancasila' => 'required',
-            'keterangan' => ['required', new wordCount(50)],
-            'hasil_kunjungan' =>  ['required', new wordCount(200)],
+            'keterangan' => ['required', new wordCount(15)],
+            'hasil_kunjungan' =>  ['required', new wordCount(50)],
             'nama_tempat' => 'required|min:5',
             'tempat_id' => 'required',
             'file_foto' => 'required|image|mimes:jpeg,png,jpg|max:1048'

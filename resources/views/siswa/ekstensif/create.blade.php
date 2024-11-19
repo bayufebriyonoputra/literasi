@@ -106,6 +106,7 @@
                                     @error('rangkuman')
                                         <p class="text-danger">{{ $message }}</p>
                                     @enderror
+                                    <p class="text-muted">Minimal diisi 50 kata</p>
                                 </div>
                             </div>
 
