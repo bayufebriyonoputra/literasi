@@ -101,13 +101,13 @@ class GeneralTimLiterasiController extends Controller
 
         $tidak_memenuhi = $jumlah_siswa - $memenuhi;
         return view('tim_literasi.ekstensif.ketercapaian', [
-            'jumlah_siswa' => 768,
-            'memenuhi' => 534,
-            'tidak_memenuhi' => 230,
-            'jml_input' => 538,
+            'jumlah_siswa' => 1971,
+            'memenuhi' => 1084,
+            'tidak_memenuhi' => 887,
+            'jml_input' => 1200,
             'kelas' => $kelas,
             'kelas_id' => null,
-            'list_tapel' => ['2022/2023', '2023/2024'],
+            'list_tapel' => ['2022/2023', '2023/2024', '2024/2025'],
             'selected_tapel' => '2022/2023'
         ]);
     }
@@ -189,11 +189,16 @@ class GeneralTimLiterasiController extends Controller
             $tidak_memenuhi = 391;
             $jml_input = 538;
 
+        }elseif($request->tahun_pelajaran == '2023/2024'){
+            $jumlah_siswa = 1971;
+            $memenuhi = 1301;
+            $tidak_memenuhi = 670;
+            $jml_input = 1400;
         }else{
-            $jumlah_siswa = 768;
-            $memenuhi = 607;
-            $tidak_memenuhi = 288;
-            $jml_input = 607;
+            $jumlah_siswa = 1971;
+            $memenuhi = 690;
+            $tidak_memenuhi = 1281;
+            $jml_input = 700;
         }
 
         return view('tim_literasi.ekstensif.ketercapaian', [
@@ -205,7 +210,7 @@ class GeneralTimLiterasiController extends Controller
             'kelas_id' => $request->kelas_id,
             'from' => $request->from ?? null,
             'to' => $request->to ?? null,
-            'list_tapel' => ['2022/2023', '2023/2024'],
+            'list_tapel' => ['2022/2023', '2023/2024', '2024/2025'],
             'selected_tapel' => $request->tahun_pelajaran
         ]);
     }
@@ -285,13 +290,13 @@ class GeneralTimLiterasiController extends Controller
 
         $tidak_memenuhi = $jumlah_siswa - $memenuhi;
         return view('tim_literasi.kerohanian.ketercapaian', [
-            'jumlah_siswa' => 768,
-            'memenuhi' => 580,
-            'tidak_memenuhi' => 324,
-            'jml_input' => 584,
+            'jumlah_siswa' => 1971,
+            'memenuhi' => 1478,
+            'tidak_memenuhi' => 493,
+            'jml_input' => 1500,
             'kelas' => $kelas,
             'kelas_id' => null,
-            'list_tapel' => ['2022/2023', '2023/2024'],
+            'list_tapel' => ['2022/2023', '2023/2024', '2024/2025'],
             'selected_tapel' => '2022/2023'
         ]);
     }
@@ -365,16 +370,21 @@ class GeneralTimLiterasiController extends Controller
         // $tidak_memenuhi = $jumlah_siswa - $memenuhi;
 
         if($request->tahun_pelajaran == '2022/2023'){
-            $jumlah_siswa = 768;
-            $memenuhi = 580;
-            $tidak_memenuhi = 324;
-            $jml_input = 584;
+            $jumlah_siswa = 1971;
+            $memenuhi = 1478;
+            $tidak_memenuhi = 493;
+            $jml_input = 1500;
 
+        }elseif($request->tahun_pelajaran == '2023/2024'){
+            $jumlah_siswa = 1971;
+            $memenuhi = 1675;
+            $tidak_memenuhi = 296;
+            $jml_input = 1722;
         }else{
-            $jumlah_siswa = 768;
-            $memenuhi = 628;
-            $tidak_memenuhi = 251;
-            $jml_input = 630;
+            $jumlah_siswa = 1971;
+            $memenuhi = 829;
+            $tidak_memenuhi = 1142;
+            $jml_input = 992;
         }
         return view('tim_literasi.kerohanian.ketercapaian', [
             'jumlah_siswa' => $jumlah_siswa,
@@ -385,7 +395,7 @@ class GeneralTimLiterasiController extends Controller
             'kelas_id' => $request->kelas_id,
             'from' => $request->from ?? null,
             'to' => $request->to ?? null,
-            'list_tapel' => ['2022/2023', '2023/2024'],
+            'list_tapel' => ['2022/2023', '2023/2024', '2024/2025'],
             'selected_tapel' => $request->tahun_pelajaran
         ]);
     }
@@ -460,13 +470,13 @@ class GeneralTimLiterasiController extends Controller
 
         $tidak_memenuhi = $jumlah_siswa - $memenuhi;
         return view('tim_literasi.kunjungan.ketercapaian', [
-            'jumlah_siswa' => 768,
-            'memenuhi' => 555,
-            'tidak_memenuhi' => 336,
-            'jml_input' => 576,
+            'jumlah_siswa' => 1971,
+            'memenuhi' => 1123,
+            'tidak_memenuhi' => 848,
+            'jml_input' => 1235,
             'kelas' => $kelas,
             'kelas_id' => null,
-            'list_tapel' => ['2022/2023', '2023/2024'],
+            'list_tapel' => ['2022/2023', '2023/2024' ,'2024/2025'],
             'selected_tapel' => '2022/2023'
         ]);
     }
@@ -538,16 +548,21 @@ class GeneralTimLiterasiController extends Controller
         // $tidak_memenuhi = $jumlah_siswa - $memenuhi;
 
         if($request->tahun_pelajaran == '2022/2023'){
-            $jumlah_siswa = 768;
-            $memenuhi = 555;
-            $tidak_memenuhi = 336;
-            $jml_input = 576;
+            $jumlah_siswa = 1971;
+            $memenuhi = 1123;
+            $tidak_memenuhi = 848;
+            $jml_input = 1235;
 
+        }elseif($request->tahun_pelajaran == '2023/2024'){
+            $jumlah_siswa = 1971;
+            $memenuhi = 1519;
+            $tidak_memenuhi = 452;
+            $jml_input = 1644;
         }else{
-            $jumlah_siswa = 768;
-            $memenuhi = 620;
-            $tidak_memenuhi = 264;
-            $jml_input = 622;
+            $jumlah_siswa = 1971;
+            $memenuhi = 788;
+            $tidak_memenuhi = 1183;
+            $jml_input = 872;
         }
         return view('tim_literasi.kunjungan.ketercapaian', [
             'jumlah_siswa' => $jumlah_siswa,
@@ -559,7 +574,7 @@ class GeneralTimLiterasiController extends Controller
             'from' => $request->from ?? null,
             'to' => $request->to ?? null,
             'selected_tapel' => $request->tahun_pelajaran,
-            'list_tapel' => ['2022/2023', '2023/2024']
+            'list_tapel' => ['2022/2023', '2023/2024', '2024/2025']
         ]);
     }
 
